@@ -1,0 +1,31 @@
+class Solution {
+public:
+    bool wordPattern(string pattern, string str) {
+        map<char, string> mapper;
+        map<string, char> revmapper;
+        std::istringstream buf(str);
+        std::istream_iterator<std::string> beg(buf), end;
+
+        std::vector<std::string> tokens(beg, end);
+
+        if(tokens.size() != pattern.length())
+        {
+            return false;
+        }
+        for(int i = 0; i < pattern.length(); i++)
+        {
+            map<char, string>::iterator it = mapper.find(pattern[i]);
+            map<string, char>::iterator rit = revmapper.find(tokens[i]);
+            if(it == mapper.end()&&rit == revmapper.end())
+            {
+                mapper[pattern[i]] = tokens[i];
+                revmapper[tokens[i]] = pattern[i];
+            }
+            else if(mapper[pattern[i]]!=(tokens[i]) || revmapper[tokens[i]]!=pattern[i])
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+};
