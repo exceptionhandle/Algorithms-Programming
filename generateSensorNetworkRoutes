@@ -1,0 +1,141 @@
+#include <map>
+#include <set>
+#include <list>
+#include <cmath>
+#include <ctime>
+#include <deque>
+#include <queue>
+#include <stack>
+#include <string>
+#include <bitset>
+#include <cstdio>
+#include <limits>
+#include <vector>
+#include <climits>
+#include <cstring>
+#include <cstdlib>
+#include <fstream>
+#include <numeric>
+#include <sstream>
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+
+vector<string> generateSensorNetworkRoutes(vector<string> input){
+    int numofStr = input.size();
+    int num = 0;
+    int strl = input[0].length();
+    int routers[numofStr][strl];
+    for(int i = 0;i<numofStr;i++){
+        for(int j = 0;j<strl;j++){
+            routers[i][j]=100;
+        }
+    }
+    //horizontal traversal of each row
+    while(num < numofStr){
+    string x = input[num];
+    stack<int> st;
+    
+    int count = 0;
+    
+    for(int i = 0;i<strl;i++){
+        if(x[i]=='X'){
+           count = 1;
+            while(!st.empty()){
+                int in = st.top();
+                if(routers[num][in]>=count&&input[num][in] != '^')
+                {
+                    routers[num][in]=count;
+                    count++;
+                    input[num][in] = '>';
+                }
+                st.pop();
+            }
+            count = 1;
+            routers[num][i]=0;
+        }
+        else{
+            if(count != 0 && routers[num][i] >= count&&input[num][i]!='>'&&input[num][i]!='^'&&input[num][i]!='_'){
+                routers[num][i]=count;
+                count++;
+                input[num][i] = '<';
+            }
+            
+            st.push(i);
+        }
+    }
+    num++;
+
+    }
+    numofStr = input.size();
+    strl = input[0].length();
+    int strnum = 0;
+    
+    //vertical traversal of each col
+    
+    while(strnum < strl){
+    stack<int> st;
+    
+    int count = 0;
+    
+    for(int i = 0;i< numofStr;i++){
+        if(input[i][strnum]=='X'){
+            count = 1;
+            while(!st.empty()){
+                int in = st.top();
+                if(routers[in][strnum]>=count&&input[in][strnum]!='>'&&input[in][strnum]!='^')
+                {
+                    routers[in][strnum]=count;
+                    count++;
+                    input[in][strnum] = '_';
+                }
+                st.pop();
+            }
+            count = 1;
+            routers[i][strnum]=0;
+        }
+        else{
+        
+            if(count != 0 && count <= routers[i][strnum]){
+                routers[i][strnum]=count;
+                count++;
+                input[i][strnum] = '^';
+            }
+            st.push(i);
+        }
+    }
+    strnum++;
+
+    }
+    return input;
+
+}
+
+
+int main() {
+    ofstream fout(getenv("OUTPUT_PATH"));
+    vector < string > res;
+    
+    int _input_size = 0;
+    while(cin >> _input_size){
+    cin.ignore (std::numeric_limits<std::streamsize>::max(), '\n'); 
+    vector<string> _input;
+    string _input_item;
+    for(int _input_i=0; _input_i<_input_size; _input_i++) {
+        getline(cin, _input_item);
+        _input.push_back(_input_item);
+    }
+    
+    res = generateSensorNetworkRoutes(_input);
+    for(int res_i=0; res_i < res.size(); res_i++) {
+    	cout << res[res_i] << endl;
+    }
+    cout<<endl;
+    }
+    fout.close();
+    return 0;
+}
+
+
+
