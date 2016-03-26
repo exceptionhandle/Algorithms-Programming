@@ -1,0 +1,23 @@
+class Solution {
+public:
+    vector<int> countBits(int num) {
+        vector<int> Bits;
+        int i=1;
+        Bits.push_back(0);
+        int j =0;
+        while (j + i <= num)
+        {
+            /************** Push in location (i+j) ******************/
+            Bits.push_back(Bits[j] + 1);
+            if( j == i-1 )
+            {
+                i = i << 1;
+                j = 0;
+                continue;
+            }
+            j++;
+            
+        }
+        return Bits;
+    }
+};
