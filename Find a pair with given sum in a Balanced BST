@@ -1,0 +1,134 @@
+#include <stdio.h>
+
+struct node {
+    int val;
+    struct node *left, *right;
+};
+
+struct stack{
+    int size;
+    int top;
+    struct node* *array;
+};
+
+void push(struct stack *stck, struct node *nd)
+{
+    if(isFull(stck))
+    {
+        return ;
+    }
+    (stck->top)++;
+    stck->array[stck->top] = nd;
+}
+
+void pop(struct stack *stck)
+{
+    free(stck->array[stck->top]);
+    (stck->top)--;
+}
+
+struct stack initStck(int mxSz){
+    struct stack *temp = (struct stack *)malloc(sizeof(struct stack));
+    temp->size = mxSz;
+    temp->top = -1;
+    temp->array = (struct node**)malloc(sizeof(struct node*)*mxSz);
+    return temp;
+}
+
+int isFull(struct stack *stck)
+{
+    return (stck->top + 1 == stck->size);
+}
+
+int isEmpty(struct stack *stck)
+{
+    return (stck->top == -1);
+}
+
+void fillStckLeft(struct stack *left, struct node *lft_in)
+{
+    while(lft_in)
+    {
+        push(left, lft_in);
+        lft_in = lft_in->left;
+    }
+}
+
+void fillStckRght(right, rght_in)
+{
+    while(rght_in)
+    {
+        push(right, rght_in);
+        rght_in = rght_in->right;
+    }
+}
+
+struct node* top(struct stack *stck)
+{
+    return stck->array[stck->top];
+}
+
+int isPairPresent(struct node * head, int target)
+{
+    struct stack *left = initStck(INIT_MAX);
+    struct stack *right = initStck(INIT_MAX);
+    
+    struct node* lft_in = head;
+    struct node* rght_in = head;
+    
+    fillStckLeft(left, lft_in);
+    fillStckRght(right, rght_in);
+    
+    lft_in = top(left);
+    rght_in = top(right);
+    
+    while(1)
+    {
+        if(lft_in->val > rght_in->val)
+        {
+            return 0;
+        }
+        else if(lft_in->val + rght_in->val == target)
+        {
+            return 1;
+        }
+        else if(lft_in->val + rght_in->val < target)
+        {
+            struct node *mvForwrd = top(left);
+            mvForwrd = mvForwrd->right;
+            pop(left);
+            fillStckLeft(left, mvForwrd);
+            lft_in = top(left);
+        }
+        else
+        {
+            struct node *mvBackwrd = top(right);
+            mvBackwrd = mvBackwrd->left;
+            pop(right);
+            fillStckRght(right, mvBackwrd);
+            rght_in = top(right);
+        }
+    }
+}
+
+
+int main() {
+	/*
+                   15
+                /     \
+              10      20
+             / \     /  \
+            8  12   16  25    */
+    struct node *root =  NewNode(15);
+    root->left = NewNode(10);
+    root->right = NewNode(20);
+    root->left->left = NewNode(8);
+    root->left->right = NewNode(12);
+    root->right->left = NewNode(16);
+    root->right->right = NewNode(25);
+ 
+    int target = 33;
+    if (isPairPresent(root, target) == false)
+        printf("\n No such values are found\n");
+	return 0;
+}
