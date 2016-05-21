@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <iostream>
+using namespace std;
+
+int isSubsetSum(int set[], int n, int sum)
+{
+    int subset[n+1];
+    for (int i = 0; i <= n; i++)
+      subset[i] = 1;
+ 
+     for (int i = 1; i <= sum; i++)
+     {
+       for (int j = 1; j <= n; j++)
+       {
+         subset[j] |= subset[j-1]&(1<<i);
+         if (i >= set[j-1])
+           subset[j] |= (((subset[j-1]>>(i - set[j-1]))&1)<<i);
+       }
+     }
+     return subset[n]>>sum;
+}
+
+int main()
+{
+  int set[] = {3, 34, 4, 12, 5, 2};
+  int sum = 9;
+  int n = sizeof(set)/sizeof(set[0]);
+  cout<<((isSubsetSum(set, n, sum) != 0)?("Found SubSet"):("Not Found SubSet"));
+  return 0;
+}
