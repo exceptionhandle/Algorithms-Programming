@@ -1,0 +1,13 @@
+class Solution {
+public:
+    long numTrees(int n) {
+        long len = 1;
+        long last = 1;
+        while(len < n)
+        {
+            last = last*2*(2*len+1)/(len+2);
+            len++;
+        }
+        return last;
+    }
+};
