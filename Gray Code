@@ -1,0 +1,12 @@
+class Solution {
+public:
+    vector<int> grayCode(int n) {
+        vector<int> output;
+        int max = 1<<n;
+        for(int i = 0; i < max;i++)
+        {
+            output.push_back(i^(i>>1));
+        }
+        return output;
+    }
+};
