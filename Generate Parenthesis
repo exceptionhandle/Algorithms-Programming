@@ -1,0 +1,42 @@
+class Solution {
+public:
+    vector<string> output;
+    void genBrack(string &out, int left, int right, int pos)
+    {
+        if(left == 0 && right == 0)
+        {
+            output.push_back(out);
+            return;
+        }
+        if(right < left)
+        {
+            return;
+        }
+        if(left > 0)
+        {
+            out[pos] = '(';
+            left--;
+            genBrack(out, left, right, pos+1);
+            left++;
+        }
+        if(right > 0)
+        {
+            out[pos] = ')';
+            right--;
+            genBrack(out, left, right, pos+1);
+        }
+    }
+    
+    vector<string> generateParenthesis(int n) {
+        if(n < 1)
+        {
+            return output;
+        }
+        string out;
+        out.resize(2*n);
+        int left = n;
+        int right = n;
+        genBrack(out, left, right, 0);
+        return output;
+    }
+};
