@@ -1,0 +1,63 @@
+// auto, iota, sort, generalized lambda function, [] known as capture list
+// predefined function object in C++14 greater<>
+
+#include <iostream>
+#include <vector>
+#include <numeric>
+#include <algorithm>
+using namespace std;
+
+int main() {
+    auto a{12};
+    auto func = [](auto input) { return input * input; };
+    cout<<(func(2))<<endl;
+    return 0;
+}
+
+// IOTA EXPRESSION for reference given in header numeric
+template<class ForwardIterator, class T>
+void iota(ForwardIterator first, ForwardIterator last, T val)
+{
+    while(first != last)
+    {
+       *first = val;
+       ++first;
+       ++val;
+    }
+}
+
+// CREATE SEQUENCE OF INTEGERS USING IOTA 
+int main() {
+    auto a{12};
+    
+    // Generalized Lambda Expression to print input
+    auto func = [](auto input) { cout<<input<<endl; };
+    
+    // Declare size of the vector but not defined i.e., not initialized
+    vector<int> v(10);
+    
+    // Create sequnce of integers
+    iota(v.begin(), v.end(), 1);
+    
+    for_each(v.begin(), v.end(), func);
+    return 0;
+}
+
+// Sort using sort function in algorithm and lambda expression in the sort function
+
+int main() {
+    vector<int> v(10);
+
+    // creates a sequence of increasing integer sequence
+    iota(v.begin(), v.end(), 1);
+    for_each(v.begin(), v.end(), [](int x){cout<<x<<" ";});
+
+    cout<<endl;
+
+    // sorts in decreasing order
+    sort(v.begin(), v.end(), [](auto i, auto j) { return (i > j); });
+    for_each(v.begin(), v.end(), [](auto x){cout<<x<<" ";});
+    cout<<endl;
+    return 0;
+}
+
