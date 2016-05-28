@@ -1,0 +1,23 @@
+class Solution {
+public:
+    void rotate(vector<vector<int>>& matrix) {
+        int last = matrix.size();
+        // Take left to right Mirror Image
+        for(int i = 0; i < last; i++)
+        {
+            for(int j = 0; j < (last)/2; j++)
+            {
+                swap(matrix[i][j],matrix[i][last - 1 - j]);
+            }
+        }
+        // Take Diagonal Mirror Image
+        for(int i = 0; i < last; i++)
+        {
+            for(int j = 0; j < last - i; j++)
+            {
+                swap(matrix[i][j],matrix[last - 1 - j][last - 1 - i]);
+            }
+        }
+        
+    }
+};
