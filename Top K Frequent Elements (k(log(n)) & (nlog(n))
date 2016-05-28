@@ -1,0 +1,50 @@
+// Solution complexity O(klog(n))
+
+class Solution {
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        unordered_map<int,int> res;
+        vector<int> output;
+    
+        auto func = [&res](int x){ res[x]++; };
+        for_each(nums.begin(), nums.end(), func);
+
+        auto cmp = [](pair<int,int> left, pair<int,int> right) { return (left.second ) > (right.second );};
+        priority_queue<pair<int,int>, vector<pair<int,int>>,decltype(cmp) > q(cmp);
+        
+        for(pair<int,int> n : res)
+        {
+            q.push(n);
+            if(q.size()>k){
+                q.pop();
+            }
+        }
+        
+        while (!q.empty())
+        {
+            output.push_back(q.top().first);
+            q.pop();
+        }
+        return output;
+    }
+};
+
+// Solution complexity O(nlog(n))
+class Solution {
+public:
+    vector<int> topKFrequent(vector<int>& nums, int k) {
+        unordered_map<int,int> res;
+        vector<pair<int, int>> out;
+        vector<int> output;
+        auto func = [&res](int x){ res[x]++; };
+        auto push = [&out](pair<int,int> x){ out.push_back(x); };
+        for_each(nums.begin(), nums.end(), func);
+        for_each(res.begin(), res.end(), push);
+
+        auto f1 = [](pair<int, int> x, pair<int, int> y){ return (x.second) > (y.second);};
+        sort(out.begin(), out.end(), f1);
+        auto f2 = [&output](pair<int, int> x){ output.push_back(x.first); };
+        for_each(out.begin(), out.begin()+k, f2);
+        return output;
+    }
+};
