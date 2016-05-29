@@ -1,0 +1,43 @@
+class Solution {
+public:
+    vector<vector<int>> palindromePairs(vector<string>& words) {
+        unordered_map<string, int> indxOfRev;
+        vector<vector<int>> out;
+        int len = words.size();
+        int indx=0;
+        auto rev = [&indxOfRev, &indx](string s){ reverse(s.begin(), s.end()); indxOfRev[s]=indx;indx++;};
+        for_each(words.begin(), words.end(), rev);
+
+        
+        auto isPalin = [](string s){
+            int len = s.size()-1;
+            for(int i = 0; i < len; i++, len--)
+            {
+                if(s[i] != s[len])
+                {
+                    return 0;
+                }
+            }
+            return 1;
+        };
+
+        auto func = [&indxOfRev, &isPalin, &out](string x, string y, int i){  
+            return (isPalin(x) && indxOfRev.count(y) && (indxOfRev[y] != i));};
+
+        int ind = -1;
+        for(auto word : words)
+        {
+            ind++;
+            int wLen = word.size();
+            for(int i = 0; i <= wLen; i++)
+            {
+                string prefix = word.substr(0,i);
+                string suffix = word.substr(i);
+                if(func(prefix, suffix, ind))  out.push_back({indxOfRev[suffix], ind});
+                if(suffix != "" && func(suffix, prefix, ind))  out.push_back({ind, indxOfRev[prefix]});
+            }
+        }
+        return out;
+        
+    }
+};
