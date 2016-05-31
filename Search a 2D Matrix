@@ -1,0 +1,16 @@
+class Solution {
+public:
+    
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        if(matrix.size() == 0) return 0;
+        int colNo = matrix[0].size(), strt = 0, last = (matrix.size() * colNo) - 1;
+        while(strt <= last)
+        {
+            int mid = (strt+last)/2, row = mid/colNo, col = mid%colNo;
+            if(matrix[row][col] == target) return 1;
+            (matrix[row][col] < target)? strt = mid + 1: last = mid - 1;
+        }
+        return 0;
+    }
+};
+
