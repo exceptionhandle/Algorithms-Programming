@@ -1,0 +1,13 @@
+class Solution {
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+        
+        auto sort = [](int &x, int &y){ return x<y; };
+        priority_queue<int, vector<int>, greater<int>> pq;
+
+        auto add = [&pq,&k](int &x){  if(pq.size() == k) {if(pq.top()>x) return; pq.pop();} pq.push(x); };
+        for_each(nums.begin(), nums.end(), add);
+
+        return pq.top();
+    }
+};
