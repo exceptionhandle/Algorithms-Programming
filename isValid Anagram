@@ -1,0 +1,13 @@
+class Solution {
+public:
+    bool isAnagram(string s, string t) {
+        int hash[128]{};
+        if(s.size() != t.size()) return 0;
+        bool isAnag = true;
+        auto addHash = [&hash](char s){ hash[s-'0']++; };
+        auto subHash = [&hash, &isAnag](char s){ hash[s-'0']--; if(hash[s-'0'] < 0) isAnag = false; };
+        for_each(s.begin(), s.end(), addHash);
+        for_each(t.begin(), t.end(), subHash);
+        return isAnag;
+    }
+};
