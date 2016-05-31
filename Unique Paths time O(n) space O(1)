@@ -1,0 +1,11 @@
+class Solution {
+public:
+    int uniquePaths(int m, int n) {
+        double max = m<n?m-1:n-1,  all = m+n-2, ans = 1;
+        while(max!=0)
+        {
+            ans *= ((all--)/(max--));
+        }
+        return (int)(ans+0.5);
+    }
+};
