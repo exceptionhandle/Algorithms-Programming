@@ -1,0 +1,17 @@
+
+class Solution {
+public:
+    void collctView(TreeNode* root, int &level, vector<int> &collect, int currLvl)
+    {
+        if(root == NULL) return;
+        if(currLvl > level) collect.push_back(root->val),level++;
+        collctView(root->right, level, collect, currLvl+1);
+        collctView(root->left, level, collect, currLvl+1);
+    }
+    vector<int> rightSideView(TreeNode* root) {
+        vector<int> collect;
+        int level = -1, currLvl = 0;
+        collctView(root, level, collect, currLvl);
+        return collect;
+    }
+};
