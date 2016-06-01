@@ -1,0 +1,24 @@
+class Solution {
+public:
+    void find(vector<int> &candidates, int target, vector<vector<int>> &out, vector<int> &in, int strt)
+    {
+        int len = candidates.size();
+        if(target == 0) {out.push_back(in);return;}
+        for(; strt < len; strt++)
+        {
+            if(candidates[strt] > target) continue;
+            in.push_back(candidates[strt]);
+            int n = target - candidates[strt];
+            find(candidates, n, out, in, strt);
+            in.pop_back();
+        }
+        
+    }
+    vector<vector<int>> combinationSum(vector<int>& candidates, int target) {
+        vector<vector<int>> out;
+        vector<int> in;
+        sort(candidates.begin(), candidates.end());
+        find(candidates, target, out, in, 0);
+        return out;
+    }
+};
