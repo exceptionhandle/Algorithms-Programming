@@ -1,0 +1,24 @@
+class Solution {
+public:
+    void connect(TreeLinkNode *root) {
+        if(root == NULL) return;
+        TreeLinkNode *parent = root;
+        while(parent)
+        {
+            TreeLinkNode *curr = parent;
+            while(curr)
+            {
+                if(curr->left) curr->left->next = curr->right;
+                if(curr->right && curr->next) curr->right->next = (curr->next->left)?(curr->next->left):(curr->next->right);
+                curr = curr->next;
+            }
+            TreeLinkNode *temp = NULL;
+            while(temp == NULL && parent)
+            {
+                temp = (parent->left)?(parent->left):(parent->right);
+                parent = parent->next;
+            }
+            parent = temp;
+        }
+    }
+};
