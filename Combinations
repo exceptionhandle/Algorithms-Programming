@@ -1,0 +1,20 @@
+#define vi(x) vector<x>
+class Solution {
+public:
+    vector<vector<int>> combine(int n, int k) {
+       vi(vi(int)) list;
+       vi(int) out;
+       backtrack(list, out, 1, k, n);
+       return list;
+    }
+
+    void backtrack(vi(vi(int)) &list, vi(int) &tempList, int strt, int k, int n) {
+        for (int i = strt; i <= n; i++) {
+            tempList.push_back(i);
+
+            (tempList.size() == k)? list.push_back(tempList) : backtrack(list, tempList, i + 1, k, n);
+
+            tempList.pop_back();
+        }
+    }
+};
