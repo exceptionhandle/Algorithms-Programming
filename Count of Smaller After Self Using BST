@@ -1,0 +1,48 @@
+#define vi(x) vector<x>
+class Solution {
+public:
+
+    struct TreeNode
+    {
+        int val;
+        TreeNode *left, *right;
+        int dup, lessThan;
+        TreeNode(int vl, int dp, int Cnt) : dup(dp), lessThan(Cnt), val(vl), left(NULL), right(NULL){}
+    };
+    
+    int insert(TreeNode *root, int val)
+    {
+        int tot = 0;
+        if(root == NULL) return 0;
+        if(root->val == val)
+        {
+            root->dup++;
+            tot = root->lessThan;
+        }
+        else if(root->val > val)
+        {
+            root->lessThan++;
+            if(!(root->left)){ root->left = new (TreeNode)(val, 1, 0); }
+            else tot = insert(root->left, val);
+        }
+        else
+        {
+            tot = (root->dup) + (root->lessThan);
+            if(!(root->right)){ root->right = new (TreeNode)(val, 1, 0); }
+            //cout<<((root->right)->val)<<" "<<((root->right)->dup)<<" "<<((root->right)->lessThan)<<endl;
+            else { tot += insert(root->right, val);}
+        }
+        return tot;
+    }
+    
+    vector<int> countSmaller(vector<int>& nums) {
+        vi(int) out(nums.size());
+        TreeNode *head = NULL;
+        for(int i = nums.size()-1 ; i >= 0 ; i--)
+        {
+            if(!head) head = new (TreeNode)(nums[i], 1, 0);
+            else out[i] = insert(head, nums[i]);
+        }
+        return out;
+    }
+};
