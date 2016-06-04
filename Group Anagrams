@@ -1,0 +1,25 @@
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        vector<vector<string>> output;
+        map<string, vector<string>> out;
+
+        auto addInMap = [&out](string str){
+            string s = str; 
+            sort(str.begin(), str.end()); 
+            out[str].push_back(s);
+        };
+
+        for_each(strs.begin(), strs.end(), addInMap);
+        for(auto it : out)
+        {
+            vector<string> inter;
+            for(auto st : it.second)
+            {
+                inter.push_back(st);
+            }
+            output.push_back(inter);
+        }
+        return output;
+    }
+};
