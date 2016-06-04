@@ -1,0 +1,22 @@
+
+ #define vi(x) vector<x>
+class Solution {
+public:
+    
+    void findPath(TreeNode* root, int sum, vi(int) &inter, vi(vi(int)) &out)
+    {
+        if(!root) return ;
+        inter.push_back(root->val);
+        if(sum-(root->val) == 0 && !(root->left) && ! (root->right)) {out.push_back(inter); inter.pop_back();return;}
+        findPath(root->left, sum-(root->val), inter, out);
+        findPath(root->right, sum-(root->val), inter, out);
+        inter.pop_back();
+    }
+    
+    vector<vector<int>> pathSum(TreeNode* root, int sum) {
+        vi(vi(int)) out;
+        vi(int) inter;
+        findPath(root, sum, inter, out);
+        return out;
+    }
+};
