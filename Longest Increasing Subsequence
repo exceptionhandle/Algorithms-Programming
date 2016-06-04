@@ -1,0 +1,33 @@
+class Solution {
+public:
+    int bSearch(vector<int> dp, int target)
+    {
+        int frst = 0, lst = dp.size()-1;
+        int mid=0;
+        while(frst<lst)
+        {
+            mid = (frst+lst)/2;
+            if(dp[mid]<target)
+            {
+                frst = mid+1;
+            }
+            else
+            {
+                lst = mid;
+            }
+        }
+        
+        return frst==dp.size()-1?(target>dp[frst]?++frst:frst):frst;
+    }
+    int lengthOfLIS(vector<int>& nums) {
+        vector<int> dp;
+        if(!nums.size()) return 0;
+        for(auto num : nums)
+        {
+            int indx = bSearch(dp, num);
+            if(indx >= dp.size()) dp.push_back(num);
+            else dp[indx] = num;
+        }
+        return dp.size();
+    }
+};
