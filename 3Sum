@@ -1,0 +1,33 @@
+#define vi(x) vector<x>
+class Solution {
+public:
+    vector<vector<int>> threeSum(vector<int>& nums) {
+        vi(vi(int)) out;
+        if(nums.size()<=2) return out; 
+        sort(nums.begin(), nums.end());
+        int frst = 0, secnd = 1, third = nums.size()-1;
+        for(;frst< nums.size()-2; frst++)
+        {
+            while(frst != 0 && frst < nums.size() && nums[frst-1]==nums[frst]) frst++;
+            secnd = frst+1;third = nums.size()-1;
+            while(secnd < third)
+            {
+                if(nums[frst]+nums[secnd]+nums[third] == 0)
+                {
+                    out.push_back(vi(int){nums[frst], nums[secnd], nums[third]});
+                    secnd++;
+                    while(secnd < nums.size() && nums[secnd-1] == nums[secnd]) secnd++;
+                }
+                else if(nums[frst]+nums[secnd]+nums[third] < 0)
+                {
+                    secnd++;
+                }
+                else
+                {
+                    third--;
+                }
+            }
+        }
+        return out;
+    }
+};
