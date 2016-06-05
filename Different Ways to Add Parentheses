@@ -1,0 +1,25 @@
+#define vec(x) vector<x>
+class Solution {
+public:
+    vector<int> diffWaysToCompute(string input) {
+        int len = input.size();
+        if(len == 0) return {};
+        vec(int) out;
+        for(int i = len-1; i >= 0; i--)
+        {
+            if(isdigit(input[i])) continue;
+            auto left = diffWaysToCompute(input.substr(0,i));
+            auto right = diffWaysToCompute(input.substr(i+1));
+            for(auto l : left)
+            {
+                for(auto r : right)
+                {
+                    if(input[i] == '+') out.push_back(l + r);
+                    else if(input[i] == '-') out.push_back(l - r);
+                    else if(input[i] == '*') out.push_back(l * r);
+                }
+            }
+        }
+        return out.empty()?vec(int){stoi(input)}:out;
+    }
+};
