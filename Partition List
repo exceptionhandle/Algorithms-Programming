@@ -1,0 +1,15 @@
+#define LN ListNode
+class Solution {
+public:
+    ListNode* partition(ListNode* head, int x) {
+        if(!(head) || !(head->next)) return head;
+        LN *head1 = NULL, *pt1 = NULL, *head2 = NULL, *pt2 = NULL;
+        auto iterate = [](LN **pt, LN **h1, LN **h){(*pt)? ((*pt)->next = (*h), (*pt) = (*pt)->next):( (*h1) = (*h), (*pt) = (*h)); (*h) = (*h)->next;};
+        
+        while(head)  (head->val < x)? iterate(&pt1, &head1, &head) : iterate(&pt2, &head2, &head);
+        
+        if(pt1) pt1->next = head2;
+        if(pt2) pt2->next = NULL;
+        return head1?head1: head2;
+    }
+};
