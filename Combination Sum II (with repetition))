@@ -1,0 +1,26 @@
+#define vec(x) vector<x>
+class Solution {
+public:
+    void find(vec(int) &candidates, int target, vec(vec(int)) &out, vec(int) &in, int strt)
+    {
+        int len = candidates.size();
+        if( len <= strt ) return;
+        for( int i = strt; i < len && candidates[i] <= target; i++ )
+        {
+            if( i != strt && candidates[i-1] == candidates[i] ) continue;
+            in.push_back(candidates[i]);
+            int sum = target - candidates[i];
+            (sum == 0)? out.push_back(in) : find(candidates, sum, out, in, i + 1);
+            in.pop_back();
+        }
+    }
+    
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        vec(vec(int)) out;
+        vec(int) in;
+        sort(candidates.begin(), candidates.end());
+        if(candidates.size() == 0) return {};
+        find(candidates, target, out, in, 0);
+        return out;
+    }
+};
