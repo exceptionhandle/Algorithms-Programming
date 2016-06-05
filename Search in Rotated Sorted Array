@@ -1,0 +1,36 @@
+#define vec(x) vector<x>
+class Solution {
+public:
+    int findPivot(vec(int) &nums)
+    {
+        int f = 0, l = nums.size()-1;
+        if(nums[0] < nums[l]) return 0;
+        while(f<=l)
+        {
+            int mid = (f+l)/2;
+            if(mid < l && nums[mid] > nums[mid+1]) return mid+1;
+            if(nums[mid] > nums[0]) f = mid+1;
+            else l = mid;
+        }
+        return f;
+    }
+    int find(vec(int) &nums, int f, int l, int target)
+    {
+        while(f<=l)
+        {
+            int mid = (f+l)/2;
+            if(nums[mid] == target) return mid;
+            else if(nums[mid] < target) f = mid + 1;
+            else l = mid-1;
+        }
+        return -1;
+    }
+    int search(vector<int>& nums, int target) {
+        if(nums.size() == 0) return -1;
+        if(nums.size() == 1) return nums[0] == target? 0: -1;
+        int ind = findPivot(nums);
+        if(nums[nums.size()-1] < target) return find(nums, 0, ind-1, target);
+        else return find(nums, ind, nums.size()-1, target);
+        return -1;
+    }
+};
