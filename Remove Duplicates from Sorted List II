@@ -1,0 +1,31 @@
+#define LN ListNode
+class Solution {
+public:
+    ListNode* deleteDuplicates(ListNode* head) {
+        LN *newHead = NULL, *pt = NULL;
+        if(!head || !(head->next)) return head;
+        if(head->val != (head->next)->val) newHead = head, pt = head;
+        
+        while(head && head->next)
+        {
+            LN *tmp = head->next;
+            LN *tmpNxt = tmp->next;
+            if((head->val != tmp->val) && (!tmpNxt || (tmp->val != tmpNxt->val)))
+            {
+                if(pt)
+                {
+                    pt->next = tmp;
+                    pt = pt->next;
+                }
+                else
+                {
+                    newHead = tmp;
+                    pt = tmp;
+                }
+            }
+            head = head->next; 
+        }
+        if(pt) pt->next = NULL;
+        return newHead;
+    }
+};
