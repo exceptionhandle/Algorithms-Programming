@@ -1,0 +1,19 @@
+class Solution {
+public:
+    int singleNumber(vector<int>& nums) {
+        int first = 0, second = 0;
+        for (auto num : nums) {
+        
+        // save first time repetition of bit in first
+        // third time repetition will become 0 when num has common bit with second and will become zero. 
+        // first will have bit if 4th repetition scene that is . it will become first appearance in series of 3
+        
+            first = first ^ num ^ (second & num);
+
+        // save second time repetition of bit in second
+
+            second = second ^ num ^ (first & num);
+        }
+        return first;
+    }
+};
