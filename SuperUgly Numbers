@@ -1,0 +1,22 @@
+class Solution {
+public:
+    int nthSuperUglyNumber(int n, vector<int>& primes) {
+        vector<long> superUgly(n,0);
+        int len = primes.size();
+        vector<int> iter(len, 0);
+        superUgly[0] = 1;
+        for(int i = 1; i < n;i++)
+        {
+            int minInd = 0;
+            for(int j = 0; j < len; j++){
+                int val = (primes[j] * superUgly[iter[j]]);
+                int minVal = (primes[minInd] * superUgly[iter[minInd]]);
+                if(val == superUgly[i-1]) {++iter[j];val = (primes[j] * superUgly[iter[j]]);}
+                minInd = ((minVal < val))?minInd:j;
+            }
+            superUgly[i] = primes[minInd] * superUgly[iter[minInd]];
+            ++iter[minInd];
+        }
+        return superUgly[n-1];
+    }
+};
