@@ -1,0 +1,42 @@
+
+class Solution {
+public:
+    void solve(vector<vector<char>>& board) {
+        int row = board.size();
+        if(row < 3) return;
+        int col = board[0].size();
+        if(col < 3) return;
+        for(int i = 0; i < row; i++)
+        {
+            if(board[i][0] == 'O') signInBfs(board, i, 0);
+            if(board[i][col - 1] == 'O') signInBfs(board, i, col - 1);
+        }
+        for(int i = 0; i < col; i++)
+        {
+            if(board[0][i] == 'O') signInBfs(board, 0, i);
+            if(board[row - 1][i] == 'O') signInBfs(board, row - 1, i);
+        }
+        for(auto &rows : board)
+            for(auto &elem : rows)
+                elem = (elem == '+')? 'O' : 'X';
+    }
+    
+    void signInBfs(auto& board, int i, int j)
+    {
+        int row = board.size();
+        int col = board[0].size();
+        queue<pair<int, int>> bfs_q;
+        bfs_q.emplace(i, j);
+        board[i][j] = '+';
+        while(!bfs_q.empty())
+        {
+            auto ro = bfs_q.front().first;
+            auto co = bfs_q.front().second;
+            bfs_q.pop();
+            if(ro + 1 < row && board[ro + 1][co] == 'O') board[ro+1][co] = '+',bfs_q.emplace(ro + 1, co);
+            if(ro - 1 >= 0 && board[ro - 1][co] == 'O') board[ro-1][co] = '+',bfs_q.emplace(ro - 1, co);
+            if(co + 1 < col && board[ro][co + 1] == 'O') board[ro][co+1] = '+',bfs_q.emplace(ro, co + 1);
+            if(co - 1 >= 0 && board[ro][co - 1] == 'O') board[ro][co-1] = '+',bfs_q.emplace(ro, co - 1);
+        }
+    }
+};
