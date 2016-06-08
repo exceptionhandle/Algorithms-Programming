@@ -9,23 +9,23 @@
  */
 class Solution {
 public:
+    int calcLevels(TreeNode* root)
+    {
+        int level = 0;
+        while(root) level++,root=root->left;
+        return level;
+    }
+    
+    // Total Number of Nodes in a tree = 2^^levels - 1
+    // We do not subtract 1 from the Total number of nodes calculated from the left or right subtree so to also add up the current root node count .. So 2^^levels of nodes includes only one sub tree i.e., left or right and recurse to another subtree
     int countNodes(int l_level,TreeNode* root)
     {
         if(!root) return 0;
-        TreeNode* r = root->right;
-        int r_level = 0;
-        while(r) { r_level++; r=r->left; }
-        if(l_level == r_level) return (1<<l_level)+countNodes(l_level-1,root->right);
-        return ( 1<<r_level ) + countNodes(l_level-1,root->left);
+        int r_level = calcLevels(root->right);
+        return (l_level == r_level)? (1<<l_level)+countNodes(l_level-1,root->right) : (1<<r_level)+countNodes(l_level-1,root->left);
     }
     int countNodes(TreeNode* root) {
         if(!root) return 0;
-        TreeNode* l = root->left;
-        TreeNode* r = root->right;
-        int l_level = 0, r_level = 0;
-        while(l) {l_level++;l=l->left;}
-        while(r) {r_level++;r=r->left;}
-        if(l_level==r_level) return (1<<l_level)+countNodes(l_level-1,root->right);
-        return (1<<r_level)+countNodes(l_level-1,root->left);
+        return countNodes(calcLevels(root->left), root);
     }
 };
