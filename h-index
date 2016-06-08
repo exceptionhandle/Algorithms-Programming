@@ -1,0 +1,18 @@
+class Solution {
+public:
+    int hIndex(vector<int>& citations) {
+        int totalPaps = citations.size();
+        int numOfpaps[totalPaps+1]{0};
+        for(auto cit : citations)
+        {
+            (cit >= totalPaps)? numOfpaps[totalPaps]++: numOfpaps[cit]++;
+        }
+        int sumOfPaps = 0;
+        for(int maxi = totalPaps; maxi > 0; maxi--)
+        {
+            sumOfPaps += numOfpaps[maxi];
+            if(sumOfPaps >= maxi) return maxi;
+        }
+        return 0;
+    }
+};
