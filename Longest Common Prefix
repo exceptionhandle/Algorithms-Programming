@@ -1,3 +1,4 @@
+// Horizontal Traversal
 class Solution {
 public:
     string longestCommonPrefix(vector<string>& strs) {
@@ -15,5 +16,22 @@ public:
             subLen = z;
         }
         return strs[len-1].substr(0,subLen);
+    }
+};
+
+// Vertical Traversal
+class Solution {
+public:
+    string longestCommonPrefix(vector<string>& strs) {
+        int len = strs.size();
+        if(len == 0) return "";
+        if(len == 1) return strs[0];
+        int i;
+        for(i = 0; i < strs[0].size(); i++)
+        {
+            for(int x = 1; x < len; x++)
+                if(strs[x].size() <= i || strs[x][i]!=strs[x-1][i]) return strs[x].substr(0,i);
+        }
+        return strs[len-1].substr(0,i);
     }
 };
