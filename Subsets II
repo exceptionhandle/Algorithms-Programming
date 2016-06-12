@@ -1,0 +1,19 @@
+#define vi(x) vector<x>
+class Solution {
+public:
+    vector<vector<int>> subsetsWithDup(vector<int>& nums) {
+        sort(nums.begin(),nums.end());
+   
+        vi(vi(int)) final{vi(int)()}, inter;
+        for(int strtPos = 0; strtPos < nums.size(); strtPos++)
+        {
+            if(strtPos == 0 || nums[strtPos] != nums[strtPos-1]) 
+                inter = final;
+            
+            for(auto &vec : inter) 
+                vec.push_back(nums[strtPos]);
+            final.insert(final.end(), inter.begin(), inter.end());
+        }
+        return final;
+    }
+};
