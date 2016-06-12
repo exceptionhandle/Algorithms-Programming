@@ -1,18 +1,20 @@
+#define offBit 0
 class Solution {
 public:
     vector<int> singleNumber(vector<int>& nums) {
+
         // find XOR of all numbers
         int xorVal = 0;
         for(int n : nums) xorVal ^= n;
 
         // find first set bit from right of the XOR
-        int pos = 0;
-        while(((xorVal>>(pos++)) & 1) == 0);
-        pos--;
-        pos = (1<<pos);
-
+        int firstSetBit = -1;
+        while(((xorVal>>(++firstSetBit)) & 1) == offBit);
+        firstSetBit = (1<<firstSetBit);
+        
+        // find Numbers
         int onenum = 0;
-        for_each(nums.begin(), nums.end(), [&onenum, &pos](int n){ if(n&pos) onenum ^= n; });
+        for_each(nums.begin(), nums.end(), [&onenum, &firstSetBit](int n){ if(n&firstSetBit) onenum ^= n; });
         return {onenum, xorVal^onenum};
     }
 };
