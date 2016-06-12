@@ -1,0 +1,31 @@
+#define LN ListNode
+class Solution
+{
+    public:    
+    ListNode* insertionSortList(ListNode* head)
+    {
+        if(!head || !(head->next)) return head;
+        
+        LN *dummy = new LN(0);
+        dummy->next = head;
+        LN *outer = head;
+        while(outer && (outer->next))
+        {
+            LN *inner = dummy;
+            while(inner != outer)
+            {
+                if((inner->next)->val > (outer->next)->val)
+                {
+                    LN *outPtr = outer->next;
+                    outer->next = outer->next->next;
+                    outPtr->next = inner->next;
+                    inner->next = outPtr;
+                    break;
+                }
+                inner = inner->next;
+            }
+            if(inner == outer) outer = outer->next;
+        }
+        return dummy->next;
+    }
+};
