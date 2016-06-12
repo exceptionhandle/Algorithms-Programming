@@ -1,0 +1,24 @@
+class Solution {
+public:
+    void nextPermutation(vector<int>& nums) {
+        int len = nums.size();
+        if(len <= 1) return;
+        int sml, lrg;
+        for( sml = len-2; sml >= 0; sml--)
+        {
+            if(nums[sml] < nums[sml+1])
+            {
+                for(lrg = len-1; lrg > sml; lrg--)
+                {
+                    if(nums[lrg] > nums[sml])
+                    {
+                        swap(nums[sml], nums[lrg]);
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        reverse(nums.begin()+sml+1, nums.end());
+    }
+};
