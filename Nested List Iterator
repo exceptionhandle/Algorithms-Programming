@@ -1,0 +1,35 @@
+
+class NestedIterator {
+public:
+    vector<int> list;
+    int nextInd;
+    NestedIterator *nestedIter;
+
+    NestedIterator(vector<NestedInteger> &nestedList) {
+        forwardIter(nestedList);
+        nextInd = -1;
+    }
+
+    int next() {
+        nextInd++;
+        return list[nextInd];
+    }
+
+    bool hasNext() {
+        return nextInd+1 < list.size();
+    }
+    void forwardIter(auto &nestedList)
+    {
+        for(auto &item : nestedList)
+        {
+            if((item).isInteger())
+            {
+                list.push_back((item).getInteger());
+            }
+            else
+            {
+                forwardIter((item).getList());
+            }
+        }
+    }
+};
