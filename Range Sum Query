@@ -1,0 +1,53 @@
+class NumArray {
+private:
+    vector<int> sum;
+    int len;
+public:
+    NumArray(vector<int> &nums) {
+        len = nums.size();
+        sum.assign(len, 0);
+        for( int i = 0; i < len; i++)
+            sum.push_back(move(nums[i]));
+
+        for( int i = len-1; i >= 0; i--)
+            sum[i] = sum[2*i] + sum[2*i+1];
+
+    }
+
+    void update(int i, int val) {
+        int ind = i + len;
+        int newV = val - sum[ind];
+        
+        // update values to the root bottom up
+        while(ind > 0)
+        {
+            sum[ind] += newV;
+            ind /= 2;
+        }
+    }
+
+    int sumRange(int i, int j) {
+        if(i < 0 or j >= len) return 0;
+        
+        // start from the leaf node and backtrack to the root getting the sum for each
+        int l = i+len, r = j+len, sumR = 0;
+        while(l <= r)
+        {
+            if(l&1) sumR += sum[l], l++;
+
+            if(not (r&1)) sumR += sum[r], r--;
+
+            l = l/2;
+            r = r/2;
+            
+        }
+        return sumR;
+    }
+};
+
+
+// Your NumArray object will be instantiated and called as such:
+// NumArray numArray(nums);
+// numArray.sumRange(0, 1);
+// numArray.update(1, 10);
+// numArray.sumRange(1, 2);
