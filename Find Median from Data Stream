@@ -1,0 +1,48 @@
+class MedianFinder {
+public:
+    priority_queue<int, vector<int>, less<int>> gpq;
+    priority_queue<int, vector<int>, greater<int>> spq;
+    // Adds a number into the data structure.
+    void addNum(int num) {
+        if(gpq.size()==0 ||(gpq.top() >= num))
+        {
+            gpq.push(num);
+        }
+        else
+        {
+            spq.push(num);
+        }
+        if(gpq.size() > spq.size() + 1)
+        {
+            int x = gpq.top();
+            gpq.pop();
+            spq.push(x);
+        }
+        if(spq.size() > gpq.size() + 1)
+        {
+            int x = spq.top();
+            spq.pop();
+            gpq.push(x);
+        }
+    }
+
+    // Returns the median of current data stream
+    double findMedian() {
+        if(gpq.size() != 0 and gpq.size() == spq.size())
+        {
+            double x = (double)gpq.top()+(double)spq.top();
+            return (double)((double)x*0.5);
+        }
+        else if(gpq.size() > spq.size())
+        {
+            return gpq.top();
+        }
+        else
+            return spq.top();
+    }
+};
+
+// Your MedianFinder object will be instantiated and called as such:
+// MedianFinder mf;
+// mf.addNum(1);
+// mf.findMedian();
