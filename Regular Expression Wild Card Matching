@@ -1,0 +1,56 @@
+// Use Cases
+// 1. If next char is wild card * check if current is comparable char or is pattern is '.'. If compares then check recursively if without using *, it is a match. (* means 0 or more occurence)
+// 2. If next is not * and curr is comparable or pattern == '.' iterate both strings
+// 3. else not a match return false.
+// 4. loop through all remaining * characters at the end of pattern.
+// 5. If the string and pattern has reached end return 1
+class Solution {
+public:
+    bool regMatch(string &s, string &p, int i , int pa, int &len, int &palen, auto& memoize)
+    {
+        while( i < len && pa < palen)
+        {
+            if(p[pa+1] == '*')
+            {
+                if(s[i] != p[pa] and p[pa] != '.') 
+                {
+                    pa += 2;
+                }
+                else if(memoize[i][pa+2] == 1 or ( memoize[i][pa+2] != 0 and (memoize[i][pa+2] = regMatch(s, p, i, pa+2, len, palen, memoize))==1))
+                {
+                    return 1;
+                }
+                else
+                {
+                    i++;
+                }
+            }
+            else if(p[pa] == s[i] || p[pa] == '.')
+            {
+                i++;
+                pa++;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+        
+        while(pa + 1 < palen && p[pa+1] == '*')
+        {
+            pa += 2;
+        }
+        return i >= len and pa >= palen;
+
+    }
+    bool isMatch(string s, string p) {
+        int len = s.size();
+        int palen = p.size();
+        int i = 0;
+        int pa = 0;
+        if(len == 0 and palen == 0) return 1;
+        if(palen == 0) return 0;
+        vector<vector<int>> memoize(len+1, vector<int>(palen+1, -1));
+        return regMatch(s, p, i, pa, len, palen, memoize);
+    }
+};
