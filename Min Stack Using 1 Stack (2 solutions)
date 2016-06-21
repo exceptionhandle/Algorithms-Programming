@@ -1,0 +1,69 @@
+Min Element Stack Using 1 Stack
+
+![alt tag](Algorithms-Programming/MinStack.png)
+
+class MinStack {
+    stack<long long> st;
+    long long minEl = INT_MAX;
+public:
+    void push(int &&x) {
+        if(x < minEl)
+        {
+            int newMin = x;
+            x = 2*x - minEl;
+            minEl = newMin;
+        }
+        st.push(x);
+    }
+
+    void pop() {
+        long x = st.top();
+        if(x < minEl)
+        {
+            minEl = 2*minEl - x;
+        }
+        st.pop();
+    }
+
+    int top() {
+        long long x = st.top();
+        return (x < minEl)?minEl:x;
+    }
+
+    int getMin() {
+        return minEl;
+    }
+};
+
+
+
+Min Stack Using 2 Stacks
+
+class MinStack {
+    stack<int> st;
+    stack<int> min;
+public:
+    void push(int x) {
+        st.push(x);
+        if(min.empty()||(min.top()>=st.top()))
+        {
+            min.push(x);
+        }
+    }
+
+    void pop() {
+        if(st.top()==min.top())
+        {
+            min.pop();
+        }
+        st.pop();
+    }
+
+    int top() {
+        return st.top();
+    }
+
+    int getMin() {
+        return min.top();
+    }
+};
