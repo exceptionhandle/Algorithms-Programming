@@ -1,7 +1,5 @@
 Min Element Stack Using 1 Stack
 
-![alt tag](Algorithms-Programming/MinStack.png)
-
 class MinStack {
     stack<long long> st;
     long long minEl = INT_MAX;
