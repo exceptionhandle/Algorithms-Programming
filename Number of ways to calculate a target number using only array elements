@@ -1,0 +1,31 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+void find(auto& in, int ind, int target, int sum, int &cnt)
+{
+	int len = in.size();
+	if(target == sum)
+	{
+		cnt++;
+	}
+	if(ind == len)
+	{
+		return;
+	}
+	
+	for(int i = ind; i < len; i++)
+	{
+		find(in, i+1, target, sum + in[i], cnt);
+		find(in, i+1, target, sum - in[i], cnt);
+	}
+}
+
+int main() {
+	vector<int> in{-3, 1, 3, 5};
+	int target = 6;
+	int cnt = 0;
+	find(in, 0, target, 0, cnt);
+	cout<<cnt<<endl;
+	return 0;
+}
