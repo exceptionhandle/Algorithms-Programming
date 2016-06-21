@@ -1,0 +1,97 @@
+##// Using Another Stack 
+
+#include <iostream>
+#include <stack>
+using namespace std;
+
+int main() {
+	stack<int> st;
+	st.push(43);
+	st.push(4);
+	st.push(3);
+	st.push(22);
+	st.push(12);
+	st.push(54);
+	st.push(1);
+	
+	stack<int> stSortd;
+	
+	while(!st.empty())
+	{
+		int x = st.top();
+		st.pop();
+		if(stSortd.empty() or stSortd.top() < x)
+		{
+			stSortd.push(x);
+		}
+		else
+		{
+			int y = stSortd.top();
+			while(!stSortd.empty() and y > x)
+			{
+				stSortd.pop();
+				st.push(y);
+				if(!stSortd.empty())
+					y = stSortd.top();
+			}
+			stSortd.push(x);
+		}
+		
+	}
+	while(!stSortd.empty())
+	{
+		cout<<stSortd.top()<<endl;
+		stSortd.pop();
+	}
+	return 0;
+}
+
+
+##// Using Recursion and System Stack 
+
+#include <iostream>
+#include <stack>
+using namespace std;
+
+void nowSort(auto& st, int num)
+{
+	if(st.empty() or st.top() < num)
+	{
+		st.push(num);
+		return;
+	}
+	int topper = st.top();
+	st.pop();
+	nowSort(st, num);
+	st.push(topper);
+}
+
+void recurToSort(auto& st)
+{
+	if(st.empty()) return;
+	int topper = st.top();
+	st.pop();
+	recurToSort(st);
+	nowSort(st,topper);
+}
+
+
+int main() {
+	stack<int> st;
+	st.push(43);
+	st.push(4);
+	st.push(3);
+	st.push(22);
+	st.push(12);
+	st.push(54);
+	st.push(1);
+	
+	recurToSort(st);
+	
+	while(!st.empty())
+	{
+		cout<<st.top()<<endl;
+		st.pop();
+	}
+	return 0;
+}
