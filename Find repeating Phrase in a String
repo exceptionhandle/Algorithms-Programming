@@ -1,0 +1,43 @@
+Given an input file of text, find the longest duplicated substring of characters in it. For instance, 
+the longest repeated string in "Ask not what your country can do for you, but what you can do for your country'' 
+is "can do for you'', with "your country" a close second place. How would you write a program to solve this problem?
+
+#include <iostream>
+#include <vector>
+#include <algorithm>
+
+using namespace std;
+
+int main() {
+	string str( "Ask not what your country can do for you, but what you can do for your country");
+	
+	int len = str.size();
+	vector<char *> strAdd;
+	for(int i = 0; i < len; i++)
+	{
+		strAdd.push_back(&str[i]);
+	}
+	char* maxi = NULL;
+	int maxLen = 0;
+	auto findMax = [&maxi, &maxLen](char *x, char *y)
+	{
+		int cnt = 0;
+		for(;(x[cnt] != '\0') and (y[cnt] != '\0') and (x[cnt] == y[cnt]);cnt++);
+		if(maxLen < cnt)
+			maxi = &x[cnt],
+			maxLen = cnt;
+		
+		return (y[cnt]=='\0') or (x[cnt] != '\0' and (x[cnt] < y[cnt]));
+	};
+	
+	sort(strAdd.begin(), strAdd.end(), findMax);
+	cout<<maxLen<<endl;
+	string ans = "";
+	maxi -= maxLen;
+	for(int i = 0; i < maxLen; i++)
+	{
+		ans += maxi[i];
+	}
+	cout<<ans;
+	return 0;
+}
