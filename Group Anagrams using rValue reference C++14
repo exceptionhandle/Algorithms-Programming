@@ -1,3 +1,37 @@
+// Using Hashing beats 100%
+
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        vector<vector<string>> output;
+        unordered_map<int, int> out;
+        vector<int> charToHash;
+        int h = 1;
+        for (int c=0; c< 26; ++c) {
+            h = h * 3 + c;
+            charToHash.push_back(h);
+        }
+        
+        int ind = 0;
+        for(auto&& s : strs)
+        {
+            int hash = 0;
+            for(auto&& h : s)
+                hash += (charToHash[h - 'a']);
+
+            if(out.find(hash) == out.end())
+                output.push_back({s}),
+                out[hash] = ind++;
+            else
+                output[out[hash]].push_back(s);
+        }
+        return output;
+    }
+};
+
+
+// Using unordered_map beats 86 % solutions
+
 class Solution {
 public:
     vector<vector<string>> groupAnagrams(vector<string>& strs) {
@@ -16,3 +50,5 @@ public:
         return output;
     }
 };
+
+
