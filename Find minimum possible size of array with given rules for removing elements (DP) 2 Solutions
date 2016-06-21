@@ -1,0 +1,123 @@
+//Bottom Up approach
+// 1. Fill count of Remaining integers in memoize Array for size of 2 and size of 3
+// 3. Then with increasing gap size from 2 to len - 1 between 1st (i) and 3rd (j) element of sequence find remaining elements.
+// 4. count minimum for mem[0][j] by taking mem[0][i-1] +mem[i][j] 
+
+
+#include <iostream>
+#include <vector>
+
+using namespace std;
+
+int main() {
+    vector<int> input{2, 3, 4, 7, 6, 4};//{2, 3, 4, 5, 6, 4};
+    int len = input.size();
+    int k = 1;
+ 
+    vector<vector<int>> mem(len, vector<int>(len, (1<<30)));
+    
+	for(int i = 0 ; i < len-1; i++)
+	{
+		mem[i][i] = 1;
+		mem[i][i+1] = 2;
+	}
+	mem[len-1][len-1] = 1;
+	
+	for(int i = 1; i < len-1; i++)
+	{
+		if(input[i-1] + k == input[i] and input[i] + k == input[i+1])
+		{
+			mem[i-1][i+1] = 0;
+		}
+		else
+		{
+			mem[i-1][i+1] = 3;
+		}
+	}
+	
+	for(int gap = 2; gap < len; gap++)
+	{
+		for(int j = gap; j < len; j++)
+		{
+			int i = j - gap;
+			for(int l = i + 1; l <= j - 1; l++)
+			{
+				if((input[i] + k == input[l]) and (input[l] + k == input[j]) and ((i + 1 == l or mem[i+1][l-1] == 0) and (l + 1 == j or mem[l+1][j-1] == 0)))
+				{
+					mem[i][j] = 0;
+				}
+				else
+				{
+					mem[i][j] = min(mem[i][j], 3 + ((i+1 == l)?0:mem[i+1][l-1]) + ((l+1 == j)?0:mem[l+1][j-1]));
+				}
+				if(0 < i)
+				{
+					mem[0][j] = min(mem[0][j], mem[0][i-1]+mem[i][j]);
+				}
+////				cout<<mem[0][j]<<" set value ::"<<mem[i][j]<<" "<<i<<" "<<l<<" "<<j<<" "<<mem[i+1][l-1]<<" "<<mem[l+1][j-1]<<endl;
+			}
+				
+		}	
+	}
+
+
+	cout<< mem[0][len-1]<<endl;
+	return 0;
+}
+
+// Top Down Approach
+
+// 1. Return If already evaluated
+// 2. Return If size of array is less than 3
+// 3. Initialize result INT_MAX
+// 4. Check for all possible triplets (low, i, j)
+// 5. Check if this triplet follows the given rules of removal. 
+// Elements between 'low' and 'i' , and between 'i' and 'j' can be recursively removed.
+
+
+
+
+
+
+#include <iostream>
+#include <vector>
+using namespace std;
+#define MAX 1000
+ 
+int minSizeRec(auto &arr, int low, int high, int k, auto &memoize)
+{
+    if (memoize[low][high] != -1)  return memoize[low][high];
+ 
+    if ( (high-low + 1) < 3) return memoize[low][high] = (high-low + 1);
+ 
+    int mini = (1<<30);
+ 
+    for (int i = low+1; i<=high-1; i++)
+    {
+        for (int j = i+1; j <= high; j++ )
+        {
+        	// Check if Low i and j form a sequence and there are 0 elements between Low, i and j
+            if ((arr[low] + k == arr[i]) and (arr[low] + 2*k == arr[j]) and
+                minSizeRec(arr, low+1, i-1, k, memoize) == 0 and
+                minSizeRec(arr, i+1, j-1, k, memoize) == 0)
+            {
+                 mini = min(mini, minSizeRec(arr, j+1, high, k, memoize));
+            }
+        }
+    }
+ 
+
+    return (memoize[low][high] = mini);
+}
+ 
+int main()
+{
+    vector<int> input{2, 3, 4, 5, 6, 4};
+    int len = input.size();
+    int k = 1;
+ 
+    vector<vector<int>> memoize(len+1, vector<int>(len+1, -1));
+    
+    cout << minSizeRec(input, 0, len-1, k, memoize) << endl;
+    return 0;
+}
