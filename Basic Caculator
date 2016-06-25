@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int calculate(string s) {
+        int res = 0, frstTrm = 0;
+        char op;
+        istringstream iss(s);
+        iss >> frstTrm;
+        while(iss >> op)
+        {
+            if(op == '+' or op == '-')
+            {
+                res += frstTrm;
+                iss >> frstTrm;
+                frstTrm *= 44 - op;
+            }
+            else
+            {
+                int secTrm = 0;
+                iss >> secTrm;
+                frstTrm = (op == '*')?(frstTrm * secTrm):(frstTrm / secTrm);
+            }
+                
+        }
+        return res + frstTrm;
+    }
+};
