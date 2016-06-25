@@ -1,0 +1,45 @@
+class Solution {
+public:
+    int calculate(string s) {
+        int num = 0, res = 0;
+        int sign = 1;
+        stack<int> opera;
+        stack<int> intraRes;
+        for(auto& x: s)
+        {
+            if(x == ' ') continue;
+            if(isdigit(x))
+            {
+                num  = num*10 + x - '0';
+                continue;
+            }
+            res += sign*num;
+            num = 0;
+            switch(x)
+            {
+                case '+':
+                    sign = 1;
+                    break;
+                case '-':
+                    sign = -1;
+                    break;
+                case '(':
+                    opera.push(sign);
+                    intraRes.push(res);
+                    sign = 1;
+                    res = 0;
+                    num = 0;
+                    break;
+                case ')':
+                    if(!intraRes.empty())
+                        res = intraRes.top() + opera.top()*res,
+                        num = 0,
+                        sign = 1,
+                        intraRes.pop(),
+                        opera.pop();
+                    break;
+            }
+        }
+        return res + sign*num;
+    }
+};
