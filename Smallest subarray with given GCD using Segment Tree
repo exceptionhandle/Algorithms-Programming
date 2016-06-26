@@ -1,0 +1,128 @@
+#include <bits/stdc++.h>
+using namespace std;
+ 
+
+int *st;
+ 
+
+int gcd(int a, int b)
+{
+    if (a < b)
+        swap(a, b);
+    if (b==0)
+        return a;
+    return gcd(b, a%b);
+}
+
+int findRangeGcd(int ss, int se, int arr[], int n)
+{
+    if (ss<0 || se > n-1 || ss>se)
+        return -1;
+
+    int l = ss+n-1, r = se+n-1;
+    stack<int> stck;
+    while(l <= r)
+    {
+        if(l&1) stck.push(st[l]), l++;
+        
+        if(not (r&1)) stck.push(st[r]), r--;
+
+        l = l/2; r = r/2;
+    }
+    int x = stck.empty()?0:stck.top();
+    while(not stck.empty())
+    {
+        int y = stck.top();
+        stck.pop();
+        x = gcd(x,y);
+    }
+
+    return x;
+}
+ 
+
+int *constructSegmentTree(int arr[], int n)
+{
+    st = new int[2*n+1];
+    for(int i = n; i < 2*n; i++)
+    {
+        st[i] = arr[i-n];
+    }
+    for(int i = n-1; i >= 0; i--)
+    {
+        st[i] = gcd(st[2*i+1], st[2*i+2]);
+    }
+    return st;
+}
+ 
+
+int findSmallestSubarr(int arr[], int n, int k)
+{
+
+    bool found = false;
+
+    for (int i=0; i<n; i++)
+    {
+        if (arr[i] == k)
+            return 1;
+        if (arr[i] % k == 0)
+            found = true;
+    }
+
+    if (found == false)
+        return -1;
+
+    constructSegmentTree(arr, n);
+
+    int res = n+1;
+
+    // find gcd between i and mid match and set closest if match k
+    for (int i=0; i<n-1; i++)
+    {
+        if (arr[i] % k != 0)
+            continue;
+
+        int low = i+1;
+        int high = n-1;
+
+        int closest = 0;
+
+        while (true)
+        {
+
+            int mid = (low + high)>>1;
+            int gcd = findRangeGcd(i, mid, arr, n);
+
+            if (low + 1 >= high)
+            {
+                if (gcd == k)
+                    closest = low;
+                break;
+            }
+            else if (gcd > k)
+                low = mid;
+            else if (gcd == k)
+            {
+                closest = mid;
+                break;
+            }
+            else
+                high = mid;
+
+        }
+        if (closest != 0)
+            res = min(res, closest - i + 1);
+    }
+ 
+    return (res == n+1) ? -1 : res;
+}
+ 
+int main()
+{
+    int n = 8;
+    int k = 3;
+    int arr[] = {6, 9, 7, 10, 12, 24, 16, 27};
+    cout << "Size of smallest sub-array with given"
+         << " size is " << findSmallestSubarr(arr, n, k);
+    return 0;
+}
