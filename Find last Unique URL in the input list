@@ -1,0 +1,60 @@
+#include <iostream>
+#include <string>
+#include <vector>
+#include <map>
+#include <stdlib.h>
+using namespace std;
+
+int main() {
+	vector<string> in{"http://www.nsr.cse.buffalo.edu",
+	"http://486.nsr.cse.buffalo.edu",
+	"http://robot.nsr.cse.buffalo.edu",
+	"http://practice.nsr.cse.buffalo.edu",
+	"http://code.nsr.cse.buffalo.edu",
+	"http://www.bluemountain.nsr.cse.buffalo.edu",
+	"http://quiz.nsr.cse.buffalo.edu",
+	"http://practice.nsr.cse.buffalo.edu",
+	"http://code.nsr.cse.buffalo.edu",
+	"http://486.nsr.cse.buffalo.edu",
+	"http://robot.nsr.cse.buffalo.edu",
+	"http://practice.nsr.cse.buffalo.edu"};
+	int len = in.size();
+	vector<int> cHash(128, 0);
+	for(int i = 0; i <= 128; i++)
+	{
+		cHash[i] = (i==0?0:cHash[i-1])*3 + i;
+	}
+	
+	map<long, int> ans;
+	vector<vector<string>> out;
+	long ind = 0;
+	for(auto& s : in)
+	{
+		long hash = 0;
+		for(auto& c : s)
+		{
+		
+			hash = (hash + cHash[(c)])%101;
+		
+		}
+		if(ans.find(hash) == ans.end())
+		{
+			ans[hash] = ind++;
+			out.push_back({s});
+
+		}
+		else
+		{
+			out[ans[hash]].push_back(s);
+		}
+		
+	}
+	for(auto it = out.begin(); it < out.end(); )
+	{
+		if((*it).size() > 1)
+			out.erase(it);
+		else ++it;
+	}
+	cout<<(out.back().back())<<endl;
+	return 0;
+}
