@@ -1,0 +1,32 @@
+#include <iostream>
+#include <vector>
+
+using namespace std;
+int amount(auto &in, int cap)
+{
+	int len = in.size();
+	vector<int> memoize(cap+1, 0);
+
+	for(auto i:in)
+	{
+		memoize[i.first] = i.second;
+	}
+
+	for(int i = 0; i <= cap; i++)
+	{
+		for(auto id:in)
+		{
+			if((i - id.first >= 0) and (memoize[i - id.first] > 0))
+				memoize[i] = max(memoize[i], memoize[i - id.first]+id.second);
+		}
+	}
+	return memoize[cap];
+
+}
+
+int main() {
+	vector<pair<int, int>> in{pair<int, int>(7, 160), pair<int, int>(3, 90), pair<int, int>(2, 15)};
+	int cap = 20;
+	cout<<amount(in, cap)<<endl;
+	return 0;
+}
