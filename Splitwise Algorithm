@@ -1,0 +1,58 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+
+void minCashFlow(auto& amnt, auto &final)
+{
+    int credit = 0 , debit = 0;
+ 	int len = amnt.size();
+ 	for(int i = 1; i < len; i++)
+ 	{
+ 		if (amnt[credit] < amnt[i]) credit = i;
+ 		else if (amnt[debit] > amnt[i]) debit = i;
+ 	}
+ 	if(amnt[debit] == 0 or amnt[credit] == 0) return;
+ 	// minimum debt will be negative, so checking the absolute values
+	int mini = min(amnt[credit], -amnt[debit]);
+	// mini will be positive , so subtract it from the credit and add it to debit which would be negative
+	amnt[credit] -= mini;
+	amnt[debit] += mini;
+	final[debit][credit] = mini;
+	minCashFlow(amnt, final);
+}
+
+int main()
+{
+    // graph[i][j] indicates the amount that person i needs to
+    // pay person j
+    vector<vector<int>> graph = { {0, 1000, 2000},
+                        {0, 0, 5000},
+                        {0, 0, 0}};
+    int len = graph.size();
+
+    vector<int> amnt(len, 0);
+    
+    for(int i = 0; i < len; i++)
+    {
+    	for(int j = 0; j < len; j++)
+    	{
+    		amnt[i] += -graph[i][j] + graph[j][i];
+    	}
+    }
+    
+	vector<vector<int>> final(len+1, vector<int>(len+1, 0));
+	
+    // Print the solution
+    minCashFlow(amnt, final);
+    for(int i = 0; i < len; i++)
+    {
+    	for(int j = 0; j < len; j++)
+    	{
+    		cout<<final[i][j]<< " ";
+    	}
+    	cout<<endl;
+    }
+
+    return 0;
+}
