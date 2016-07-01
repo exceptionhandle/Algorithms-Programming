@@ -13,3 +13,45 @@ public:
         return head1?head1: head2;
     }
 };
+
+// ***************************************************************************** //
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode(int x) : val(x), next(NULL) {}
+ * };
+ */
+#define ln ListNode
+class Solution {
+public:
+    ListNode* partition(ListNode* head, int x) {
+        if(not head)return head;
+        ln dummy(-1);
+        dummy.next = head;
+        ln *ptr = &dummy;
+        while(head and head->val < x)
+        {
+            ptr = head, head = head->next;
+        }
+        ln *prev = head;
+        while(ptr->next and head)
+        {
+            if(head->val < x)
+            {
+                prev->next = head->next;
+                head->next = ptr->next;
+                ptr->next = head;
+                ptr = ptr->next;
+                head = prev->next;
+            }
+            else
+            {
+                prev = head;
+                head = head->next;
+            }
+        }
+        return dummy.next;
+    }
+};
