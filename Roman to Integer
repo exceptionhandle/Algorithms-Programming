@@ -1,0 +1,23 @@
+class Solution {
+public:
+    int romanToInt(string s) {
+        int len = s.size();
+        if(len == 0) return 0;
+        int romInt[128];
+        romInt['I'] = 1;
+        romInt['V'] = 5;
+        romInt['X'] = 10;
+        romInt['L'] = 50;
+        romInt['C'] = 100;
+        romInt['D'] = 500;
+        romInt['M'] = 1000;
+        
+        int val = romInt[s[len-1]];
+        for(int i = len-2; i >= 0; i--)
+        {
+            int x = romInt[s[i]];
+            val += romInt[s[i+1]] > x?-x:x;
+        }
+        return val;
+    }
+};
