@@ -1,0 +1,24 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+	vector<int> in{3,12,5,21};
+	int maxOfTwo = in[0]*in[1];
+	int maxNo = max(in[0],in[1]);
+	int len = in.size();
+	int maxSoFar = 0;
+	for(int i = 2; i < len; i++)
+	{
+		int maxTrip = in[i]*maxOfTwo;
+		if(maxTrip > maxSoFar) 
+			maxSoFar = maxTrip;
+		int newMaxOfTwo = maxNo*in[i];
+		if(maxOfTwo < newMaxOfTwo) 
+			maxOfTwo = newMaxOfTwo;
+		if(maxNo < in[i]) 
+			maxNo = in[i];
+	}
+	cout<<maxSoFar<<endl;
+	return 0;
+}
