@@ -1,0 +1,35 @@
+//Addition
+
+#include <iostream>
+using namespace std;
+
+int main() {
+	// your code goes here
+	int x = 100, y = 20;
+	while(y)
+	{
+		int carry = x&y;
+		x ^= y;
+		y = carry<<1;
+	}
+	cout<<x<<endl;
+	return 0;
+}
+
+
+// Subtraction
+#include <iostream>
+using namespace std;
+
+int main() {
+	// your code goes here
+	int x = 100, y = 20;
+	while(y)
+	{
+		int borrow = (~x)&y;
+		x ^= y;
+		y = borrow<<1;
+	}
+	cout<<x<<endl;
+	return 0;
+}
