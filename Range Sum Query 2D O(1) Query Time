@@ -1,0 +1,35 @@
+class NumMatrix {
+public:
+    vector<vector<int>> dp;
+    vector<vector<int>> mat;
+    
+    int row, col;
+    NumMatrix(vector<vector<int>> &matrix) {
+        if(matrix.empty()) return;
+        row = matrix.size();
+        col = matrix[0].size();
+        dp = vector<vector<int>>(row+1, vector<int>(col+1, 0));
+        mat = matrix;
+        for(int i = 1; i <= row; i++)
+        {
+            for(int j = 1; j <= col; j++)
+            {
+                dp[i][j] = dp[i][j - 1] + dp[i-1][j] - dp[i-1][j-1] + mat[i-1][j-1];
+            }
+        }
+    }
+
+    int sumRegion(int row1, int col1, int row2, int col2) {
+        if((row1 < 0 or col1 < 0 or row1 >= row or col1 >= col) or (row2 < 0 or col2 < 0 or row2 >= row or col2 >= col))
+        {
+            return 0;
+        }
+        return dp[row2+1][col2+1] - dp[row2+1][col1] - dp[row1][col2+1] + dp[row1][col1];
+    }
+};
+
+
+// Your NumMatrix object will be instantiated and called as such:
+// NumMatrix numMatrix(matrix);
+// numMatrix.sumRegion(0, 1, 2, 3);
+// numMatrix.sumRegion(1, 2, 3, 4);
