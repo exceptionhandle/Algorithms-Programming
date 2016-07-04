@@ -1,0 +1,20 @@
+class Solution {
+public:
+    int hIndex(vector<int>& citations) {
+        if(citations.empty()) return 0;
+        int len = citations.size();
+        int lo = 0, hi = len-1;
+        while(lo < hi)
+        {
+            int mid = (lo + hi)>>1;
+            
+            // We need to find the number of papers having atleast (len - mid) number of citations
+            if(citations[mid] < len - mid)
+                lo = mid+1;
+            else
+                hi = mid;
+        }
+        return (citations[lo] >= len - lo)?len - lo:0;
+
+    }
+};
