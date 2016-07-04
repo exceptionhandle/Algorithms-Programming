@@ -1,17 +1,26 @@
 class Solution {
 public:
     int hIndex(vector<int>& citations) {
+        
+        // size of citation vector is number of papers published
         int totalPaps = citations.size();
+        
+        // number of papers having that index as the number of citations
         int numOfpaps[totalPaps+1]{0};
+        
         for(auto cit : citations)
         {
             (cit >= totalPaps)? numOfpaps[totalPaps]++: numOfpaps[cit]++;
         }
+        
+        // From last index
         int sumOfPaps = 0;
-        for(int maxi = totalPaps; maxi > 0; maxi--)
+        for(int ind = totalPaps; ind > 0; maxi--)
         {
-            sumOfPaps += numOfpaps[maxi];
-            if(sumOfPaps >= maxi) return maxi;
+            sumOfPaps += numOfpaps[ind];
+            // Find total number of papers who have atleast maximum number of citations 
+            // If total number of papers exceeds the minimum citation each paper has that is the maximum h index
+            if(sumOfPaps >= ind) return ind;
         }
         return 0;
     }
