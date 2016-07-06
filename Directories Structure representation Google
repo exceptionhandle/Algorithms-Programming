@@ -1,0 +1,105 @@
+#include <iostream>
+#include <vector>
+using namespace std;
+
+int main() {
+	string dir = "dir1\n dir11\n dir12\n  abc.gif\n  def.jpeg\n  fgh.txt\n  dir121\n  dir122\ndir2\n dir21";
+	vector<string> simplLst;
+	int len = dir.size();
+	cout<< "Original Representation of Directories ::\n"<<endl;
+
+	for(int i = 0; i < len;)
+	{
+		int j = i;
+		while(i < len and dir[i++] != '\n');
+		string str = dir.substr(j,i-j-1);
+		simplLst.push_back(str);
+		cout<<str<<endl;
+	}
+	string root = "";
+	int lstSpce = 0;
+	vector<string> rootDirs;
+	string lstRoot = "";
+	cout<< "Directories seperated with slashes ::\n"<<endl;
+	for(auto& st : simplLst)
+	{
+		int i = 0;
+		int spaces = 0;
+		while(i < len and st[i] == ' ')
+		{
+			spaces++;
+			i++;
+		}
+		if(spaces < lstSpce){
+			string last = rootDirs.back();
+			int backNo = lstSpce - spaces;
+				int j = last.size();
+				for(j ; j >=0 and backNo >= 0; j--)
+				{
+					if(last[j] == '/')
+					{
+						backNo--;
+					}
+					
+				}
+			lstRoot = last.substr(0,j+1);
+		}
+		if(spaces > lstSpce)
+		{
+			lstRoot = rootDirs.back();
+		}
+		string stt = (lstRoot + "/" + st.substr(i,st.size()-i));
+    	rootDirs.push_back(stt);
+
+		lstSpce = spaces;
+		cout<<rootDirs.back()<<endl;
+		
+		
+		
+	}
+	int total = 0;
+	for(auto &strin : rootDirs)
+	{
+		int sz = strin.size();
+		if(strin.substr(sz-5, 5) == ".jpeg" or strin.substr(sz-4, 5) == ".gif")
+		{
+			total += sz;
+		}
+	}
+	cout<<"Total length of path to images ::"<<endl;
+	cout<<total;
+	return 0;
+}
+
+
+
+
+
+INPUT & OUTPUT ::
+______________
+Original Representation of Directories ::
+
+dir1
+ dir11
+ dir12
+  abc.gif
+  def.jpeg
+  fgh.txt
+  dir121
+  dir122
+dir2
+ dir2
+Directories seperated with slashes ::
+
+/dir1
+/dir1/dir11
+/dir1/dir12
+/dir1/dir12/abc.gif
+/dir1/dir12/def.jpeg
+/dir1/dir12/fgh.txt
+/dir1/dir12/dir121
+/dir1/dir12/dir122
+/dir2
+/dir2/dir2
+Total length of path to images ::
+39
