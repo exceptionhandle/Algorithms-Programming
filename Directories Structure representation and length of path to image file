@@ -2,8 +2,8 @@
 #include <vector>
 using namespace std;
 
-int main() {
-	string dir = "dir1\n dir11\n dir12\n  abc.gif\n  def.jpeg\n  fgh.txt\n  dir121\n  dir122\ndir2\n dir21";
+int findLength(string dir)
+{
 	vector<string> simplLst;
 	int len = dir.size();
 	cout<< "Original Representation of Directories ::\n"<<endl;
@@ -66,8 +66,14 @@ int main() {
 			total += sz;
 		}
 	}
+	return total;
+}
+
+int main() {
+	string dir = "dir1\n dir11\n dir12\n  abc.gif\n  def.jpeg\n  fgh.txt\n  dir121\n  dir122\ndir2\n dir21";
+	int total = findLength(dir);
 	cout<<"Total length of path to images ::"<<endl;
-	cout<<total;
+	cout<<total<<endl;
 	return 0;
 }
 
