@@ -1,0 +1,27 @@
+class comp
+{
+public:
+    int operator() (pair<int, int>& x, pair<int, int>& y)
+    {
+        return (x.first+x.second)<(y.first+y.second);
+    }
+};
+class Solution {
+public:
+    vector<pair<int, int>> kSmallestPairs(vector<int>& nums1, vector<int>& nums2, int k) {
+        int len1 = nums1.size(), len2 = nums2.size();
+        if(len1 == 0 or len2 == 0) return {};
+        vector<pair<int, int>> sol;
+        priority_queue<pair<int, int>, vector<pair<int, int>>, comp> pq;
+        for(auto& n1 : nums1)
+            for(auto& n2 : nums2)
+                if(pq.size() < k or (pq.size() >= k and pq.top().first+pq.top().second > n1+n2)) {if(pq.size() >= k) pq.pop();pq.push(pair<int, int>{n1,n2});}
+
+        for(int i = 0; i < k and not pq.empty();i++)
+        {
+            sol.push_back(pq.top());
+            pq.pop();
+        }
+        return sol;
+    }
+};
