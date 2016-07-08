@@ -1,6 +1,6 @@
 #include <iostream>
 using namespace std;
-
+#define MOD 1000000007
 int powmod(int x, int pow, int mod)
 {
 	if(pow == 0) return 0;
@@ -14,8 +14,11 @@ int powmod(int x, int pow, int mod)
 	return (halfPow%mod*halfPow%mod)%mod;
 	
 }
-
+unsigned long long int findMMI(unsigned long long int n)
+{
+    return powmod(n, MOD-2);
+}
 int main() {
-	cout<<powmod(2,7,5);
+	cout<<findMMI(2);
 	return 0;
 }
