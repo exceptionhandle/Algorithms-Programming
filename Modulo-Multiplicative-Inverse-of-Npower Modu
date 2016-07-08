@@ -1,0 +1,21 @@
+#include <iostream>
+using namespace std;
+
+int powmod(int x, int pow, int mod)
+{
+	if(pow == 0) return 0;
+	if(pow == 1) return x;
+
+	int halfPow = powmod(x, pow/2, mod);
+	if(pow&1)
+	{
+		return ((halfPow%mod*halfPow%mod)%mod*x%mod)%mod;
+	}
+	return (halfPow%mod*halfPow%mod)%mod;
+	
+}
+
+int main() {
+	cout<<powmod(2,7,5);
+	return 0;
+}
