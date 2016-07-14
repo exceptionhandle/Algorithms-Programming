@@ -1,0 +1,61 @@
+class Solution {
+public:
+#define space(ans) ((ans=="")?"":" ")
+    string Negative = "Negative", Hundred = "Hundred";
+    vector<vector<string>>  place{{"Zero", "One", "Two", "Three", "Four","Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"},
+        {"", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"},
+        {"", "Thousand", "Million", "Billion"}
+    };
+    
+    string convHund(int num)
+    {
+        string ans;
+        int hundrds = num/100;
+        num = num%100;
+        if(hundrds)
+        {
+            ans = place[0][hundrds] + " " + Hundred;
+        }
+        if(num >= 10 and num <= 19)
+        {
+            ans +=  space(ans) + place[0][num];
+        }
+        else
+        {
+            if(num/10)
+                ans +=  space(ans) + place[1][num/10];
+            if(num%10)
+                ans +=  space(ans) + place[0][num%10];
+        }
+        return ans;
+    }
+    
+    string convert(int num)
+    {
+        string ans ="";
+        int part = 0;
+        while(num)
+        {
+            int firstPrt = num%1000;
+            num = num/1000;
+            if(firstPrt != 0)
+            {
+                ans = convHund(firstPrt) + space(place[2][part]) + place[2][part] + space(ans) + ans;
+            }
+            part++;
+        }
+        return ans;
+    }
+    
+    string numberToWords(int num) {
+        string ans = "";
+        if(num == 0) return place[0][0];
+        if(num < 0)
+        {
+            ans = Negative;
+            num = -num;
+        }
+        ans += convert(num);
+        return ans;
+    }
+};
