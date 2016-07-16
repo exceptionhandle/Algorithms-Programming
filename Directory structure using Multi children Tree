@@ -1,0 +1,80 @@
+#include <iostream>
+#include <iostream>
+#include <vector>
+#include <string>
+#include <sstream>
+using namespace std;
+struct node
+{
+	string str;
+	vector<struct node*> *child;
+	node(string val):str(val){child = new vector<struct node*>();}
+}*dummy = NULL;
+
+void insert(struct node* r, string sub, int level)
+{
+    		struct node * n = new node(sub);
+		if(level == 0)
+			(r->child)->push_back(n);
+		else
+			insert(*((r->child)->rbegin()) ,sub, level-1);
+		
+		
+}
+
+void find(struct node *r, int& ans, string x)
+{
+    if(r == NULL) return;
+    if((r->str)!=" ")
+        x += "/" + (r->str);
+
+    if(! (r->child)->empty())
+    {
+        cout<<x<<endl;
+        for(auto c : *(r->child))
+        {
+            find(c, ans, x);
+        }
+    }
+    else
+    {
+        if(x.size() > 3 and (x.substr(x.size()-4) == "jpeg" or x.substr(x.size()-3) == "gif"))
+        {
+            ans += x.size();
+        }
+    }
+    
+}
+
+
+int solution(string &str) {
+	string sub;
+	int i = 0;
+	int len = str.size();
+    dummy = new (struct node)(" ");
+	while(i < len)
+	{
+		int x = i;
+		while(str[i] == ' ' and i < len)i++;
+		int j = i;
+		sub = "";
+		while(str[j] != '\n' and j < len){
+            sub += str[j];
+			j++;
+		}
+		insert(dummy, sub, i - x);
+		i = ++j;
+	}
+	
+	int ans;
+	string s = "";
+	find(dummy, ans, s);
+	
+	return ans;
+}
+int main() {
+    string x = "dir1\n dir11\n dir12\n  picture.jpeg\n  dir121\n  file1.txt\ndir2\n file2.gif";
+	cout<<solution(x)<<endl;
+	return 0;
+}
+
