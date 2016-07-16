@@ -7,19 +7,17 @@ using namespace std;
 struct node
 {
 	string str;
-	vector<struct node*> *child;
-	node(string val):str(val){child = new vector<struct node*>();}
+	vector<struct node*> child;
+	node(string val):str(val){}
 }*dummy = NULL;
 
 void insert(struct node* r, string sub, int level)
 {
     		struct node * n = new node(sub);
 		if(level == 0)
-			(r->child)->push_back(n);
+			(r->child).push_back(n);
 		else
-			insert(*((r->child)->rbegin()) ,sub, level-1);
-		
-		
+			insert(*((r->child).rbegin()) ,sub, level-1);
 }
 
 void find(struct node *r, int& ans, string x)
@@ -28,17 +26,16 @@ void find(struct node *r, int& ans, string x)
     if((r->str)!=" ")
         x += "/" + (r->str);
 
-    if(! (r->child)->empty())
+    if(! (r->child).empty())
     {
-        cout<<x<<endl;
-        for(auto c : *(r->child))
+        for(auto c : (r->child))
         {
             find(c, ans, x);
         }
     }
     else
     {
-        if(x.size() > 3 and (x.substr(x.size()-4) == "jpeg" or x.substr(x.size()-3) == "gif"))
+        if(x.size() > 3 and (x.substr(x.size()-5) == ".jpeg" or x.substr(x.size()-4) == ".gif"))
         {
             ans += x.size();
         }
