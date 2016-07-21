@@ -1,0 +1,64 @@
+class Solution {
+public:
+    inline bool safe(vector<vector<char>>& board, int i, int j, int k, vector<int>& rowv, vector<int>& colv, vector<vector<int>>& boxv)
+    {
+        //check box safety
+        if((boxv[i/3][j/3]&(1<<k)) != 0)
+            return false;
+        
+        // check horizontal and vertical
+        if((rowv[i]&(1<<k)) != 0 or (colv[j]&(1<<k)) != 0)
+            return false;
+        return true;
+    }
+    inline bool trackNsolve(vector<vector<char>>& board, vector<pair<int,int>>& st, int d, vector<int>& rowv, vector<int>& colv, vector<vector<int>>& boxv)
+    {
+        if(board.empty() or d == st.size()) return true;
+        int row = board.size();
+        int col = board[0].size();
+        int i = st[d].first;
+        int j = st[d].second;
+                    for(int k = 1; k < 10; k++)
+                    {
+                        if(safe(board, i , j, k, rowv, colv, boxv))
+                        {
+                            board[i][j] = '0' + k;
+                            colv[j] |= (1<<(k));
+                            rowv[i] |= (1<<(k));
+                            boxv[i/3][j/3] |= (1<<(k));
+                            if(trackNsolve(board, st, d+1, rowv, colv, boxv)) return true;
+                            colv[j] ^= (1<<(k));
+                            rowv[i] ^= (1<<(k));
+                            boxv[i/3][j/3] ^= (1<<(k));
+                        }
+                    }
+                    board[i][j] = '.';
+//                    st.push(pair<int, int>(i,j));
+                    return false;
+    }
+
+    void solveSudoku(vector<vector<char>>& board)
+    {
+        vector<int> rowv(9, 0), colv(9, 0);
+        vector<vector<int>> boxv(3, vector<int>(3, 0));
+        vector<pair<int, int>> st;
+        for(int i = 0; i < 9; i++)
+        {
+            
+            for(int j = 0; j < 9; j++)
+            {
+                if(board[i][j] == '.')
+                {
+                    st.push_back(pair<int, int>(i, j));
+                    continue;
+                }
+                int k = board[i][j] - '0';
+                rowv[i] |= (1<<k);
+                colv[j] |= (1<<k);
+                boxv[i/3][j/3] |= (1<<k);
+            }
+        }
+        
+        trackNsolve(board, st, 0, rowv, colv, boxv);
+    }
+};
