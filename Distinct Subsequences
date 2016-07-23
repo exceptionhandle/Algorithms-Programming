@@ -1,0 +1,17 @@
+class Solution {
+public:
+    int numDistinct(string s, string t) {
+        int len = t.size();
+        if(t.empty()) return 0;
+        vector<int> branches(len, 0);
+        for(auto c : s)
+        {
+            for(int x = len-1; x >= 0; x--)
+            {
+                if(t[x] == c)
+                    branches[x] = branches[x] + (x?branches[x-1]:1);
+            }
+        }
+        return branches.back();
+    }
+};
