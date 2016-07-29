@@ -1,0 +1,41 @@
+class Solution {
+public:
+    vector<int> findMinHeightTrees(int n, vector<pair<int, int>>& edges) {
+        unordered_map<int, set<int>> adjLst;
+        for(auto& nodes : edges)
+        {
+            adjLst[nodes.first].insert(nodes.second);
+            adjLst[nodes.second].insert(nodes.first);
+        }
+
+        if(n < 2){
+            return {0};
+        }
+        // These nodes will be removed and not be counted in result
+        vector<int> degOneNodes;
+        for(auto& node : adjLst)
+        {
+            if(node.second.size() == 1)
+            {
+                degOneNodes.push_back(node.first);
+            }
+        }
+        while(true)
+        {
+            vector<int> res;
+            n = n - degOneNodes.size();
+            for(auto& node : degOneNodes)
+            {
+                // only one adjacent node possible for these nodes
+                adjLst[*adjLst[node].begin()].erase(node);
+                if(adjLst[*adjLst[node].begin()].size() == 1)
+                    res.push_back(*adjLst[node].begin());
+                adjLst.erase(node);
+            }
+            if(res.empty()) return degOneNodes;
+            degOneNodes = res;
+        }
+
+        return degOneNodes;
+    }
+};
