@@ -1,0 +1,28 @@
+class Solution {
+public:
+    bool additive(string num, long frst, long sec)
+    {
+        if(num.empty()) return 1;
+        long sum = frst + sec;
+        string summ = to_string(sum);
+        string prefix = num.substr(0, summ.size());
+        if(prefix != summ) return 0;
+        return additive(num.substr(summ.size()), sec, sum);
+    }
+    
+    bool isAdditiveNumber(string num) {
+        int len = num.size();
+        if(len < 3) return 0;
+        for(int i = 1; i < len-1; i++)
+        {   if(i>1 and num[0]=='0') break;
+            long frst = atoi(num.substr(0,i).c_str());
+            for(int j = i+1; j < len; j++)
+            {
+                if(j-i > 1 and num[i]=='0') break;
+                long sec = atoi(num.substr(i, j-i).c_str());
+                if(additive(num.substr(j), frst, sec)) return 1;
+            }
+        }
+        return 0;
+    }
+};
