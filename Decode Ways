@@ -1,0 +1,42 @@
+ A message containing letters from A-Z is being encoded to numbers using the following mapping:
+
+'A' -> 1
+'B' -> 2
+...
+'Z' -> 26
+
+Given an encoded message containing digits, determine the total number of ways to decode it.
+
+For example,
+Given encoded message "12", it could be decoded as "AB" (1 2) or "L" (12). 
+
+class Solution {
+public:
+    
+    int numDecodings(string s) {
+        if(s.empty()) return 0;
+        
+        int len = s.size();
+
+        int twoDigWy = 1;
+        int way = (s[len-1] == '0')? 0:1;
+
+        for(int i = len-2; i >= 0; i--)
+        {
+            // if there is a 0 which cannot be combined first or used single as a number
+            // than no combination possible from here to end
+            if(s[i] == '0') 
+                twoDigWy = 0;
+            // if the 2 digits cannot make a 2 digit number than just copy the last number of ways of making combinations
+            else if(stoi(s.substr(i, 2)) > 26)
+                twoDigWy = way;
+            // if the second digit can make a 2 digit number than double the number of ways that can make up the combinations
+            else
+                twoDigWy += way;
+            // swap as the number of combinations may be used if the 0 makes a valid number with the next number, which will then add
+            // all the numbers of combinations
+            swap(way, twoDigWy);
+        }
+        return way;
+    }
+};
