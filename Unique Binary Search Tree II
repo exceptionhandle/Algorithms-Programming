@@ -1,0 +1,48 @@
+Given an integer n, generate all structurally unique BST's (binary search trees) that store values 1...n.
+
+For example,
+Given n = 3, your program should return all 5 unique BST's shown below.
+
+   1         3     3      2      1
+    \       /     /      / \      \
+     3     2     1      1   3      2
+    /     /       \                 \
+   2     1         2                 3
+
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode(int x) : val(x), left(NULL), right(NULL) {}
+ * };
+ */
+class Solution {
+public:
+    vector<TreeNode*> find(int f, int l)
+    {
+        vector<TreeNode*> ans;
+        if(f > l) return {nullptr};
+        for(int i = f; i <= l; i++)
+        {
+            vector<TreeNode*> ls = find(f, i-1);
+            vector<TreeNode*> r = find(i+1, l);
+            for(auto left : ls)
+            {
+                for(auto right : r)
+                {
+                    TreeNode *m = new TreeNode(i);
+                    m->left = left;
+                    m->right = right;
+                    ans.push_back(m);
+                }
+            }
+        }
+        return ans;
+    }
+    vector<TreeNode*> generateTrees(int n) {
+        if(n == 0) return {};
+        return find(1,n);
+    }
+};
