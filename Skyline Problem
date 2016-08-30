@@ -1,0 +1,40 @@
+A city's skyline is the outer contour of the silhouette formed by all the buildings in that city when viewed from a distance. 
+Now suppose you are given the locations and height of all the buildings as shown on a cityscape photo (Figure A), 
+write a program to output the skyline formed by these buildings collectively (Figure B).
+
+// 1. Creating a vector "build" with all coordinates and then sorting on the x axis brings all the starting and end points in position
+// 2. Then taking one by one from the build array and checking if its the starting point of the rect insert in multiset to keep track and remove it when we get right coordinate.
+// 3. Left point is denoted by negative height and Right as positive height
+// 4. We keep track of the previous edge added in the result .
+// 5. If the lastVisited coordinate inserted is bigger in height than the previous added result, then it comes in order in the multiset as the lastVisited coordinate,(set is always sorted).
+// 6. We compare if the lastVisited is not the same coordinate added last time in the result. We add the end of the set coordinate to the resultant set and make it the lastVisited coordinate.
+
+
+class Solution {
+public:
+    vector<pair<int, int>> getSkyline(vector<vector<int>>& buildings) {
+        vector<pair<int, int>> build, sol;
+        multiset<int> line;
+        
+        for(auto& hts : buildings)
+        {
+            build.push_back({hts[0], -hts[2]});
+            build.push_back({hts[1], hts[2]});
+        }
+        sort(build.begin(), build.end());
+        int lastVisited = 0, curr;
+        line.insert(0);
+        for(auto& b : build)
+        {
+            if(b.second < 0) line.insert(-b.second);
+            else line.erase(line.find(b.second));
+            curr = *line.rbegin();
+            if(lastVisited != curr)
+            {
+                sol.push_back({b.first, curr});
+                lastVisited = curr;
+            }
+        }
+        return sol;
+    }
+};
