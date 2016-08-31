@@ -14,20 +14,17 @@ Window position                Max
 
 Therefore, return the max sliding window as [3,3,5,5,6,7].
 
-
 class Solution {
 public:
-    vector<int> finalAns, currAns;
+    vector<int> finalAns;
     vector<int> maxSlidingWindow(vector<int>& nums, int k) {
         if(nums.empty()) return {};
         deque<int> st;
         for(int i = 0; i < k and i < nums.size(); i++)
         {
-            if(st.empty() or st.back() <= nums[i])
-            {
-                while(not st.empty() and st.back() < nums[i])
-                    st.pop_back();
-            }
+            while(not st.empty() and st.back() < nums[i])
+                st.pop_back();
+            
             st.push_back(nums[i]);
         }
         finalAns.push_back(st.front());
@@ -35,14 +32,11 @@ public:
         {
             
             if((not st.empty()) and nums[i-k] == st.front())
-            {
                 st.pop_front();
-            }
-            if(st.empty() or st.back() <= nums[i])
-            {
-                while(not st.empty() and st.back() < nums[i])
-                    st.pop_back();
-            }
+            
+            while(not st.empty() and st.back() < nums[i])
+                st.pop_back();
+            
             st.push_back(nums[i]);
             finalAns.push_back(st.front());
         }
