@@ -1,0 +1,56 @@
+Runs 151 testcases in 16 ms beats all submitted solution
+
+/**
+ * Definition for an interval.
+ * struct Interval {
+ *     int start;
+ *     int end;
+ *     Interval() : start(0), end(0) {}
+ *     Interval(int s, int e) : start(s), end(e) {}
+ * };
+ */
+class Solution {
+public:
+    vector<Interval> insert(vector<Interval>& intervals, Interval newInterval) {
+        if(intervals.empty()) return {newInterval};
+        auto funcSt = [](Interval x, Interval y)
+        {
+            return x.start < y.start;
+        };
+        auto funcEnd = [](Interval x, Interval y)
+        {
+            return x.end < y.end;
+        };
+        auto strtIt = upper_bound(intervals.begin(), intervals.end(), newInterval, funcSt);
+        auto endIt = upper_bound(intervals.begin(), intervals.end(), newInterval, funcEnd);
+        if(strtIt < endIt)
+        {
+            strtIt = intervals.erase(strtIt, endIt);
+        }
+        auto prev = strtIt-1;
+        auto nxt = strtIt;
+
+        if((strtIt != intervals.begin()) and (nxt < intervals.end()) and ((*prev).end >= newInterval.start) and ((*nxt).start <= newInterval.end))
+        {
+            (*prev).end = (*nxt).end;
+            intervals.erase(nxt);
+        }
+        else
+        {
+            if(strtIt != intervals.begin() and (*prev).end >= newInterval.start)
+            {
+                (*prev).end = max((*prev).end, newInterval.end);
+            }
+            else if(nxt < intervals.end() and (*nxt).start <= newInterval.end)
+            {
+                (*nxt).start = newInterval.start;
+            }
+            else
+            {
+                if(strtIt == intervals.end()) intervals.push_back(newInterval);
+                else intervals.insert(strtIt, newInterval);
+            }
+        }
+        return intervals;
+    }
+};
