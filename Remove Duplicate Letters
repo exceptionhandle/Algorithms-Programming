@@ -1,0 +1,41 @@
+class Solution {
+public:
+    int lastInd[26]{-1};
+    string removeDuplicateLetters(string s) {
+        if(s.empty()) return s;
+        for(int i = 0; i < 26 ; i++) lastInd[i] = -1;
+        for(int i = 0; i < s.size(); i++)
+        {
+            lastInd[s[i] - 'a'] = i;
+        }
+        int i = 0;
+        string res = "";
+        while(i < s.size())
+        {
+            int minCh = findMinInd();
+            if(minCh == INT_MAX) return res;
+            int k = minCh;
+            for(int j = i; j < k; j++)
+            {
+                if(lastInd[s[j]-'a'] != -1 and s[minCh] >= s[j])
+                {
+                    if(s[minCh] == s[j] and minCh < j)continue;
+                    minCh = j;
+                }
+            }
+            res += s[minCh];
+            i = minCh + 1;
+            lastInd[s[minCh]-'a'] = -1;
+        }
+        return res;
+    }
+    int findMinInd()
+    {
+        int mini = INT_MAX;
+        for(int i = 0; i < 26; i++)
+        {
+            if(lastInd[i]!=-1 and (lastInd[i] < mini)) mini = lastInd[i];
+        }
+        return mini;
+    }
+};
