@@ -33,21 +33,17 @@ int main() {
 		long hash = 0;
 		for(auto& c : s)
 		{
-		
 			hash = (hash + cHash[(c)])%101;
-		
 		}
 		if(ans.find(hash) == ans.end())
 		{
 			ans[hash] = ind++;
 			out.push_back({s});
-
 		}
 		else
 		{
 			out[ans[hash]].push_back(s);
 		}
-		
 	}
 	for(auto it = out.begin(); it < out.end(); )
 	{
