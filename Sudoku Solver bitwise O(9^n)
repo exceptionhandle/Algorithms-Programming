@@ -1,0 +1,72 @@
+class Solution {
+vector<vector<char>> board; 
+vector<int> rowv(9, 0), colv(9, 0);
+vector<vector<int>> boxv(3, vector<int>(3, 0));
+vector<pair<int, int>> st;
+public:
+    inline bool safe(int i, int j, int valBit)
+    {
+        //check box safety
+        if((boxv[i/3][j/3]&valBit))
+            return false;
+        
+        // check horizontal and vertical
+        if((rowv[i]&valBit) or (colv[j]&valBit))
+            return false;
+        return true;
+    }
+    inline bool trackNsolve(int indx)
+    {
+        if(board.empty() or indx == st.size()) return true;
+        int row = board.size();
+        int col = board[0].size();
+        int i = st[indx].first;
+        int j = st[indx].second;
+        for(int val = 1; val < 10; val++)
+        {
+            int valBit = (1<<val);
+            if(safe(i , j, valBit))
+            {
+                board[i][j] = '0' + val;
+
+                // set the bit for the current value
+                colv[j] |= valBit;
+                rowv[i] |= valBit;
+                boxv[i/3][j/3] |= valBit);
+                
+                //recurse to check if valid combination exists else Backtrack
+                if(trackNsolve(indx+1)) return true;
+
+                // unset the bit for the current value
+                colv[j] ^= valBit;
+                rowv[i] ^= valBit;
+                boxv[i/3][j/3] ^= valBit;
+            }
+        }
+        board[i][j] = '.';
+        return false;
+    }
+
+    void solveSudoku(vector<vector<char>>& board)
+    {
+        this->board = board;
+        for(int i = 0; i < 9; i++)
+        {
+            
+            for(int j = 0; j < 9; j++)
+            {
+                if(board[i][j] == '.')
+                {
+                    st.push_back(pair<int, int>(i, j));
+                    continue;
+                }
+                int valBit = (1<<(board[i][j] - '0'));
+                rowv[i] |= valBit;
+                colv[j] |= valBit;
+                boxv[i/3][j/3] |= valBit;
+            }
+        }
+        
+        trackNsolve(0);
+    }
+};
