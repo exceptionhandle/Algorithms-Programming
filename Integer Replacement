@@ -1,0 +1,28 @@
+// boundary case if the last bits are not continuous 1 with more than one bits decrement
+// if the number is 3 decrement because it takes less steps
+// if the number has continuous bits set with more than one bits increment
+// else divide by 2
+
+class Solution {
+public:
+    int integerReplacement(long n) {
+        int cnt = 0;
+        while(n > 1)
+        {
+            if((n == 3) or ((n&3) == 1))
+            {
+                n--;
+            }
+            else if((n&1) == 1)
+            {
+                n++;
+            }
+            else
+            {
+                n = n>>1;
+            }
+            cnt++;
+        }
+        return cnt;
+    }
+};
