@@ -1,26 +1,27 @@
 class Solution {
+    vector<vector<int>> out;
+    vector<int> in;
 public:
-    void find(int need, int target, vector<vector<int>> &out, vector<int> &in, int strt)
+    void find(int need, int target, int strt)
     {
         if(need == 0)
         {
-            if(target == 0) out.push_back(in);
+            if(target == 0)
+            {
+                out.push_back(in);
+            }
             return;
         }
         for(; strt <= 9; strt++)
         {
             in.push_back(strt);
-            int n = target - strt;
-            int k = need-1;
-            find(k, n, out, in, strt+1);
+            find(need-1, target - strt, strt+1);
             in.pop_back();
         }
         
     }
     vector<vector<int>> combinationSum3(int k, int n) {
-        vector<vector<int>> out;
-        vector<int> in;
-        find(k, n, out, in, 1);
+        find(k, n, 1);
         return out;
     }
 };
