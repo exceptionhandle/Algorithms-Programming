@@ -5,13 +5,21 @@ public:
     vector<vector<int>> generateMatrix(int n) {
         if(n == 0) return {};
         vec(vec(int)) out(n, vec(int)(n, 0));
-        vec(pr(int)) dir{{0, 1}, {1, 0}, {0, -1}, {-1, 0}};
-        int step[2]{n-1, n-1}, ver = 0, hori = -1, hOrV = 0, num = 1;
-        step[0]++;
+        vec(pr(int)) dir{{0, 1}, {1, 0}, 
+                         {0,-1},{-1, 0}};
+        int step[2]{n, n-1};
+        int ver = 0, hori = -1, hOrV = 0, num = 1;
         while(step[hOrV%2])
         {
-            int last = step[hOrV%2]--, v = dir[hOrV].first, h = dir[hOrV].second;
-            for(int i = 0; i < last; i++) ver += v, hori += h, out[ver][hori] = num++;
+            int last = step[hOrV%2]--;
+            int v = dir[hOrV].first;
+            int h = dir[hOrV].second;
+            for(int i = 0; i < last; i++)
+            {
+                ver += v;
+                hori += h; 
+                out[ver][hori] = num++;
+            }
             hOrV = (hOrV+1)%4;
         }
         return out;
