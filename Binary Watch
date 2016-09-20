@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int next(int num)
+    {
+        int last = num&(-num);
+        int hi = num+last;
+        int lowerOrigShiftd = ((hi)^num)/last;
+        lowerOrigShiftd >>= 2;
+        return hi|lowerOrigShiftd;
+    }
+    vector<string> readBinaryWatch(int num) {
+        if(num == 0) return {"0:00"};
+        int n = 0;
+        while(num)
+        {
+            num--;
+            n = (n<<1)|1;
+        }
+        vector<string> res;
+        while((n>>6) <= 0x1011)
+        {
+            int hr = n/64;
+            int min = n%64;
+            n = next(n);
+            if((hr >= 12) or (min >= 60)) continue;
+            string ans = to_string(hr)+":"+(min/10==0?"0":"")+to_string(min);
+            res.push_back(ans);
+        }
+        return res;
+    }
+};
