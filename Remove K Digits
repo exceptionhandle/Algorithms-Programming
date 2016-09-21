@@ -1,0 +1,27 @@
+class Solution {
+public:
+    string removeKdigits(string num, int k) {
+        if(num.empty()) return "";
+        string ans = "";
+        for(auto n : num)
+        {
+            while((not ans.empty()) and (k > 0) and (ans.back() > n))
+            {
+                ans.pop_back();
+                k--;
+            }
+            ans.push_back(n);
+        }
+        while(k > 0 and (not ans.empty()))
+        {
+            ans.pop_back();
+            k--;
+        }
+        while(ans.front() == '0')
+        {
+            ans.erase(ans.begin());
+        }
+         
+        return (ans.empty())?"0":ans;
+    }
+};
