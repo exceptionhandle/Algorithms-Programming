@@ -1,0 +1,29 @@
+class Solution {
+public:
+    int longestSubstring(string s, int k) {
+        if(s.empty()) return 0;
+        int ans = 0;
+        int lastInd = 0;
+        for(int i = 0; i < s.size() + k;)
+        {
+            int mask = 0;
+            
+            int cnt[26]{0};
+            for(int last = i; last < s.size(); last++)
+            {
+                char ch = s[last]-'a';
+                cnt[ch]++;
+                if(cnt[ch] < k) mask |= (1<<ch);
+                else mask &= (~(1<<ch));
+                if(mask == 0)
+                {
+                    ans = max(ans, last - i + 1);
+                    lastInd = last;
+                }
+            }
+            i = lastInd+1;
+            lastInd++;
+        }
+        return ans;
+    }
+};
