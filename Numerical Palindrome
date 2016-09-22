@@ -1,9 +1,19 @@
-//Problem        : Numerical Palindromes
-//Language       : C++
-//Compiled Using : g++
-//Version        : GCC 4.9.1
-//Input for your program will be provided from STDIN
-//Print out all output from your program to STDOUT
+Input Specifications
+
+The first (and only) line will be a positive integer, with up to 15 digits.
+
+
+Output Specifications
+
+Print out the largest numerical palindrome that can be made from rearranging the digits in the input number. Largest refers to the greatest absolute value.
+
+
+Sample Input/Output
+
+INPUT
+8989
+OUTPUT
+9889
 
 #include <iostream>
 #include <string>
