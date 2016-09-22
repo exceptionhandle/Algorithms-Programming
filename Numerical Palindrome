@@ -1,0 +1,55 @@
+//Problem        : Numerical Palindromes
+//Language       : C++
+//Compiled Using : g++
+//Version        : GCC 4.9.1
+//Input for your program will be provided from STDIN
+//Print out all output from your program to STDOUT
+
+#include <iostream>
+#include <string>
+#include <algorithm>
+#include <climits> 
+#include <map>
+#include <vector>
+
+using namespace std;
+
+int main() {
+    map<int, int> count;
+    string num;
+    cin>>num;
+    while(not num.empty())
+    {
+        int n = num.back()-'0';
+        num.pop_back();
+        count[n]++;
+    }
+    string ans;
+     int odd = -1;
+        for(auto b = count.begin(); b != count.end(); b++)
+        {   
+            if(((*b).second%2 == 1) and ((*b).first > odd))
+            {
+                odd = (*b).first;
+            }
+        }
+    while(not count.empty())
+    {
+     	auto b = count.crbegin();
+        if((*b).second <= 1) 
+        {
+        	count.erase((*b).first);
+        	continue;
+        }
+        int n = (*b).first;
+        ans.insert((ans.size()/2), to_string(n) + to_string(n));
+        count[(*b).first] -= 2;
+        if((*b).second <= 0) count.erase((*b).first);
+    }
+    if(ans.empty() or ((ans.size()%2 == 0) and (odd != -1)))
+        ans.insert(ans.size()/2, to_string(odd));
+
+    
+    cout<<ans<<endl;
+    return 0;
+}
