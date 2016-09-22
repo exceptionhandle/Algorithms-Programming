@@ -1,0 +1,13 @@
+// 1st iteration removes n/2 elements
+// remaining n/2 elements are recursed to find last element from right side
+// get the element number from the left side by subtraction
+// twice the index is the answer
+
+class Solution {
+public:
+    bool ch = 1;
+    int lastRemaining(int n) {
+        if(n == 1) return 1;
+        return 2*(1 + n/2 - lastRemaining(n/2));
+    }
+};
