@@ -32,3 +32,44 @@ vector<int> Solution::rodCut(int A, vector<int> &B) {
     findlist(cut, 0, A-1);
     return ans;
 }
+
+
+vector<int> Solution::rodCut(int A, vector<int> &B) {
+    
+    if(B.empty()) return {};
+    unordered_map<int, unordered_map<int, long long>> dp;
+    unordered_map<int, unordered_map<int, vector<int>>> cut;
+
+    for(int len = 1; len < A; len++)
+    {
+        for(int i = 0; i < A-len; i++)
+        {
+            int j = i + len;
+            int final = -1;
+            for(auto x : B)
+            {
+                
+                if((x > i) and (x <= j) and (dp[i].count(j) < 1 or (len + dp[i][x-1] + dp[x][j] < dp[i][j])))
+                {
+                    dp[i][j] = len + dp[i][x-1] + dp[x][j];
+                    final = x;
+                }
+            }
+            if(final != -1)
+            {
+                cut[i][j].push_back(final);
+                for(auto x: cut[i][final-1])
+                {
+                    cut[i][j].push_back(x);
+                }
+                if(j!= final)
+                for(auto x: cut[final][j])
+                {
+                    cut[i][j].push_back(x);
+                }
+                	
+            }
+        }
+    }
+    return cut[0][A-1];
+}
