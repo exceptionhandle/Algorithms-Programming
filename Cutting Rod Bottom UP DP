@@ -1,0 +1,34 @@
+vector<int> ans;
+void findlist(vector<vector<int>>& cut, int i, int j)
+{
+    if(i + 1 >= j) return;
+    ans.push_back(cut[i][j]);
+    findlist(cut, i, cut[i][j]-1);
+    findlist(cut, cut[i][j], j);
+    
+}
+vector<int> Solution::rodCut(int A, vector<int> &B) {
+    
+    if(B.empty()) return {};
+    
+    vector<vector<int>> dp(A, vector<int>(A, (1<<30))), cut(A, vector<int>(A));
+
+    for(int len = 1; len < A; len++)
+    {
+        for(int i = 0; i < A-len; i++)
+        {
+            int j = i + len;
+            for(auto x : B)
+            {
+                
+                if((x > i) and (x <= j) and ((len + dp[i][x-1] + dp[x][j] < dp[i][j])))
+                {
+                    dp[i][j] = len + dp[i][x-1] + dp[x][j];
+                    cut[i][j] = x;
+                }
+            }
+        }
+    }
+    findlist(cut, 0, A-1);
+    return ans;
+}
