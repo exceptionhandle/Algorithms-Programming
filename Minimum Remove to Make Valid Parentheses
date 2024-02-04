@@ -1,0 +1,64 @@
+Given a string s of '(' , ')' and lowercase English characters.
+
+Your task is to remove the minimum number of parentheses ( '(' or ')', in any positions ) so that the resulting parentheses string is valid and return any valid string.
+
+Formally, a parentheses string is valid if and only if:
+
+It is the empty string, contains only lowercase characters, or
+It can be written as AB (A concatenated with B), where A and B are valid strings, or
+It can be written as (A), where A is a valid string.
+ 
+
+Example 1:
+
+Input: s = "lee(t(c)o)de)"
+Output: "lee(t(c)o)de"
+Explanation: "lee(t(co)de)" , "lee(t(c)ode)" would also be accepted.
+Example 2:
+
+Input: s = "a)b(c)d"
+Output: "ab(c)d"
+Example 3:
+
+Input: s = "))(("
+Output: ""
+Explanation: An empty string is also valid.
+
+public class Solution {
+    public string MinRemoveToMakeValid(string s) {
+        int removeCount = 0;
+        int startBraceCount = 0;
+        for (int index = 0; index < s.Length; index++) {
+            char character = s[index];
+            if (character == '(') {
+                startBraceCount++;
+            }
+            else if (character == ')') {
+                if (startBraceCount > 0) {
+                    startBraceCount--;
+                }
+                else {
+                    s = s.Remove(index, 1);
+                    index--;
+                }
+            }
+        }
+
+        int endBraceCount = 0;
+        for (int index = s.Length - 1; index >= 0; index--) {
+            char character = s[index];
+            if (character == ')') {
+                endBraceCount++;
+            }
+            else if (character == '(') {
+                if (endBraceCount > 0) {
+                    endBraceCount--;
+                }
+                else {
+                    s = s.Remove(index, 1);
+                }
+            }
+        }
+        return s;
+    }
+}
