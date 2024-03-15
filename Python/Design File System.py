@@ -43,21 +43,16 @@ Constraints:
 1 <= value <= 109
 Each path is valid and consists of lowercase English letters and '/'.
 At most 104 calls in total will be made to createPath and get.
-
 class FileSystem:
     def __init__(self):
         self.paths = {}
 
     def createPath(self, path: str, value: int) -> bool:
-       
-        # add space with slashes to make a way to split by spaces
-        ans = path.replace("/", " /")
+        # Split using slashes
+        ans = path.split("/")
 
-        # Split string into list using spaces
-        ans = ans.split()
-
-        # Get the parent path
-        parentPath = "".join(ans[:-1])
+        # Join using slashes to get the parent path. Skip the last directory/file
+        parentPath = "/".join(ans[:-1])
 
         if parentPath and parentPath in self.paths and path not in self.paths:
                 self.paths[path] = value
